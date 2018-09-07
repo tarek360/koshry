@@ -1,0 +1,22 @@
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+afterEvaluate { project ->
+  uploadArchives {
+    repositories {
+      mavenDeployer {
+        beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+        pom.groupId = "io.github.tarek360"
+        pom.artifactId = pom_artifact_id
+        pom.version = artifact_version
+        group = artifact_group
+        pom.project {
+          name artifact_name
+          packaging pom_packaging
+          description pom_description
+          url pom_url
+        }
+      }
+    }
+  }
+}
