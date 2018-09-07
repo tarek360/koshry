@@ -25,10 +25,11 @@ class Koshry {
       val ci = CiProvider().provide()
 
       if (ci != null) {
-        logger.i { "Start running on CI.." }
+        logger.i { "Koshry started running on CI.." }
+        logger.i { "${ci.javaClass.simpleName} is detected!" }
         runOnCi(ci, koshryConfig)
       } else {
-        logger.i { "Start running locally.." }
+        logger.i { "Koshry started running locally.." }
         runLocally(koshryConfig)
       }
     }
