@@ -11,7 +11,6 @@ jobs:
       # Customize the JVM maximum heap limit
       JVM_OPTS: -Xmx3200m
       TERM: dumb
-      GRADLE_OPTS: -Dorg.gradle.daemon=false
 
     steps:
     - checkout
@@ -19,18 +18,38 @@ jobs:
     # Download and cache dependencies
     - restore_cache:
         keys:
-        - v1-dependencies-{{ checksum "build.gradle" }}
-        # fallback to using the latest cache if no exact match is found
-        - v1-dependencies-
+        - jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
+        - jars-
 
     - run: gradle dependencies
 
     - save_cache:
         paths:
         - ~/.gradle
-        key: v1-dependencies-{{ checksum "build.gradle" }}
+        key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
 
     # run tests!
     - run:
         name: Build
         command: gradle test --stacktrace
+
+    - run:
+        name: PWD
+        command: pwd
+
+    - run:
+        name: LS
+        command: ls
+
+    - run:
+        name: DistZip
+        command: gradle distZip
+
+    - run:
+        name: UNZIP
+        command: unzip app/build/distributions/app.zip -d app/build/distributions
+
+    - run:
+        name: Run Koshry
+        command: app/build/distributions/app/bin/app
+
