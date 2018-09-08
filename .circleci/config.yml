@@ -34,14 +34,6 @@ jobs:
         command: gradle test --stacktrace
 
     - run:
-        name: PWD
-        command: pwd
-
-    - run:
-        name: LS
-        command: ls
-
-    - run:
         name: DistZip
         command: gradle distZip
 

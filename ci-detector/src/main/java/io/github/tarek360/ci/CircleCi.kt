@@ -20,13 +20,7 @@ class CircleCi : Ci() {
 
     override val pullRequestId: Int? by lazy {
         val pullRequestUrl: String? = System.getenv("CIRCLE_PULL_REQUEST")
-//        val start = pullRequestUrl?.indexOfLast { it == '/' }
         val pullRequestId = pullRequestUrl?.substringAfterLast('/')
-
-        println("pullRequestUrl $pullRequestUrl")
-        println("pullRequestId $pullRequestId")
-
-
         pullRequestId?.toInt()
     }
 
