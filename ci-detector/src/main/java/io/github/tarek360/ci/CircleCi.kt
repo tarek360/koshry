@@ -3,13 +3,13 @@ package io.github.tarek360.ci
 class CircleCi : Ci() {
 
     override val buildId: Int? by lazy {
-        val buildId: String? = System.getenv("CIRCLE_BUILD_NUM")
+        val buildId: String? = Environment.getVariable("CIRCLE_BUILD_NUM")
         buildId?.toInt()
     }
 
     override val projectOwnerNameRepoName: String? by lazy {
-        val projectUsername: String? = System.getenv("CIRCLE_PROJECT_USERNAME")
-        val projectRepoName: String? = System.getenv("CIRCLE_PROJECT_REPONAME")
+        val projectUsername: String? = Environment.getVariable("CIRCLE_PROJECT_USERNAME")
+        val projectRepoName: String? = Environment.getVariable("CIRCLE_PROJECT_REPONAME")
 
         if (projectUsername != null && projectRepoName != null) {
             "$projectUsername/$projectRepoName"
@@ -19,7 +19,7 @@ class CircleCi : Ci() {
     }
 
     override val pullRequestId: Int? by lazy {
-        val pullRequestUrl: String? = System.getenv("CIRCLE_PULL_REQUEST")
+        val pullRequestUrl: String? = Environment.getVariable("CIRCLE_PULL_REQUEST")
         val pullRequestId = pullRequestUrl?.substringAfterLast('/')
         pullRequestId?.toInt()
     }
