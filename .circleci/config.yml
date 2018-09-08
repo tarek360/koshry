@@ -30,16 +30,8 @@ jobs:
 
     # run tests!
     - run:
-        name: Build
+        name: Run tests
         command: gradle test --stacktrace
-
-    - run:
-        name: PWD
-        command: pwd
-
-    - run:
-        name: LS
-        command: ls
 
     - run:
         name: DistZip

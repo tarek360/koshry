@@ -1,5 +1,6 @@
 package io.github.tarek360.githost.github
 
+import io.github.tarek360.core.DEBUGGABLE
 import io.github.tarek360.core.cl.CommanderImpl
 import io.github.tarek360.githost.Comment
 import io.github.tarek360.githost.GitHost

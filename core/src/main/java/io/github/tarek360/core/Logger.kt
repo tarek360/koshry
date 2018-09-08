@@ -1,11 +1,10 @@
 package io.github.tarek360.core
 
+const val DEBUGGABLE = false
 
 val logger: Logger = Logger()
 
 class Logger {
-
-  val debugable = false
 
   val ANSI_RED = "\u001B[31m"
   val ANSI_YELLOW = "\u001B[33m"
@@ -14,7 +13,7 @@ class Logger {
   val ANSI_RESET = "\u001B[0m"
 
   fun d(msg: () -> String?) {
-    if (debugable) {
+    if (DEBUGGABLE) {
       println("$ANSI_WHITE${msg()}$ANSI_RESET")
     }
   }

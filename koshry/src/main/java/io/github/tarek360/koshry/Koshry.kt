@@ -25,10 +25,11 @@ class Koshry {
       val ci = CiProvider().provide()
 
       if (ci != null) {
-        logger.i { "Start running on CI.." }
+        logger.i { "Koshry started running on CI.." }
+        logger.i { "${ci.javaClass.simpleName} is detected!" }
         runOnCi(ci, koshryConfig)
       } else {
-        logger.i { "Start running locally.." }
+        logger.i { "Koshry started running locally.." }
         runLocally(koshryConfig)
       }
     }
@@ -45,6 +46,8 @@ class Koshry {
               pullRequestId = pullRequestId,
               token = token)
 
+      logger.d { "pullRequestId $pullRequestId" }
+
       val gitHostProvider = GitHostProvider(gitHostInfo, CommanderImpl())
 
       val gitHost: GitHost? = gitHostProvider.provide()
@@ -53,6 +56,9 @@ class Koshry {
 
       val baseSha = pullRequest?.baseSha
       val headSha = pullRequest?.headSha
+
+      logger.d { "baseSha $baseSha" }
+      logger.d { "headSha $headSha" }
 
       if (baseSha != null && headSha != null) {
 
