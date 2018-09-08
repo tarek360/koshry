@@ -5,7 +5,6 @@ import io.github.tarek360.koshry.koshry
 import io.github.tarek360.rules.lineRule
 import io.github.tarek360.rules.protectedFileRule
 import io.github.tarek360.rules.report.Level.ERROR
-import io.github.tarek360.rules.report.Level.WARN
 
 fun main(_args: Array<String>) {
 
@@ -22,9 +21,9 @@ fun main(_args: Array<String>) {
             }
 
             rule = lineRule {
-                condition = { line -> line.contains("detected") }
-                reportTitle = "I detected a 'detected' word 🤩"
-                issueLevel = WARN
+                condition = { line -> line.contains("System.getenv") }
+                reportTitle = "Don't use System.getenv directly, use Environment.getVariable instead."
+                issueLevel = ERROR
             }
         }
     }
