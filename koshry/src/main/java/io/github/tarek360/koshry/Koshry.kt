@@ -10,6 +10,7 @@ import io.github.tarek360.githost.GitHostInfo
 import io.github.tarek360.githost.Status
 import io.github.tarek360.githost.Status.Type
 import io.github.tarek360.koshry.ReportsAggregator.Companion.KOSHRY_REPORT_TITLE
+import io.github.tarek360.koshry.io.FileWriter
 import io.github.tarek360.koshry.url.FileUrlGenerator
 import io.github.tarek360.koshry.url.GithubFileUrlGenerator
 import io.github.tarek360.koshry.url.LocalFileUrlGenerator
@@ -94,15 +95,16 @@ class Koshry {
 
       val fileUrlGenerator: FileUrlGenerator = LocalFileUrlGenerator()
 
-      val baseSha = ""
-      val headSha = ""
+      val baseSha = "3974ee3ae75d42ea9786486f9885ebb6e2d27ee6"
+      val headSha = "2739ec582e38c4a8b277acc68bab5b23ffca46a7"
 
       val comment = applyRules(baseSha, headSha, koshryConfig, fileUrlGenerator)
 
-      //TODO save local report
+      val reportFilePath = "build/reports/koshry.md"
+      FileWriter().writeToFile(reportFilePath, comment.msg)
     }
 
-    private fun applyRules(headSha: String, baseSha: String, koshryConfig: KoshryConfig,
+    private fun applyRules(baseSha: String, headSha: String, koshryConfig: KoshryConfig,
                            fileUrlGenerator: FileUrlGenerator): Comment {
 
       var shouldFail = false
