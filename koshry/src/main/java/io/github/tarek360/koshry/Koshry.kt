@@ -34,7 +34,6 @@ class Koshry {
       }
     }
 
-
     private fun runOnCi(ci: Ci, koshryConfig: KoshryConfig) {
 
       val token = ci.gitHostToken
@@ -46,8 +45,6 @@ class Koshry {
               pullRequestId = pullRequestId,
               token = token)
 
-      logger.d { "pullRequestId $pullRequestId" }
-
       val gitHostProvider = GitHostProvider(gitHostInfo, CommanderImpl())
 
       val gitHost: GitHost? = gitHostProvider.provide()
@@ -57,6 +54,7 @@ class Koshry {
       val baseSha = pullRequest?.baseSha
       val headSha = pullRequest?.headSha
 
+      logger.d { "pullRequestId $pullRequestId" }
       logger.d { "baseSha $baseSha" }
       logger.d { "headSha $headSha" }
 
@@ -86,7 +84,7 @@ class Koshry {
         ))
 
       } else {
-        logger.i { "Something went wrong!" }
+        logger.e { "Something went wrong!" }
         gitHost?.post(Comment("$KOSHRY_REPORT_TITLE Something went wrong!", true))
 
       }

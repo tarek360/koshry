@@ -2,17 +2,15 @@ package io.github.tarek360.githost.github
 
 import io.github.tarek360.core.DEBUGGABLE
 import io.github.tarek360.core.cl.CommanderImpl
-import io.github.tarek360.core.logger
 import io.github.tarek360.githost.Comment
 import io.github.tarek360.githost.GitHost
 import io.github.tarek360.githost.GitHostInfo
 import io.github.tarek360.githost.PullRequest
 import io.github.tarek360.githost.Status
+import io.github.tarek360.githost.network.okhttp
 import okhttp3.MediaType
-import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody
-import okhttp3.logging.HttpLoggingInterceptor
 import org.json.JSONObject
 import java.net.HttpURLConnection.HTTP_CREATED
 
@@ -34,18 +32,6 @@ class GitHub(private val gitHostInfo: GitHostInfo) : GitHost {
   override fun getPullRequestInfo(): PullRequest? {
     val url = "$apiBaseUrl/pulls/${gitHostInfo.pullRequestId}"
 
-    val logger = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { m -> logger.d { m } })
-
-    logger.level = HttpLoggingInterceptor.Level.BASIC
-
-    val okhttpBuilder = OkHttpClient.Builder()
-
-    if(DEBUGGABLE){
-      okhttpBuilder.addInterceptor(logger)
-    }
-
-    val okhttp = okhttpBuilder.build()
-
     val request = Request.Builder()
         .url(url)
         .addHeader("Authorization", "token ${gitHostInfo.token}")
@@ -62,12 +48,6 @@ class GitHub(private val gitHostInfo: GitHostInfo) : GitHost {
   private fun postPullRequestComment(comment: Comment): String? {
 
     val url = "$apiBaseUrl/issues/${gitHostInfo.pullRequestId}/comments"
-
-    val logger = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { m -> logger.d { m } })
-
-    logger.level = HttpLoggingInterceptor.Level.BODY
-
-    val okhttp = OkHttpClient.Builder().addInterceptor(logger).build()
 
     val bodyJson = JSONObject()
     bodyJson.put("body", comment.msg)
@@ -105,12 +85,6 @@ class GitHub(private val gitHostInfo: GitHostInfo) : GitHost {
     }
 
     val body = RequestBody.create(MediaType.parse("application/json"), bodyJson.toString())
-
-    val logger = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { m -> println(m) })
-
-    logger.level = HttpLoggingInterceptor.Level.BODY
-
-    val okhttp = OkHttpClient.Builder().addInterceptor(logger).build()
 
     val request = Request.Builder()
         .url(url)
