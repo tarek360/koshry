@@ -46,6 +46,8 @@ class Koshry {
               pullRequestId = pullRequestId,
               token = token)
 
+      logger.d { "pullRequestId $pullRequestId" }
+
       val gitHostProvider = GitHostProvider(gitHostInfo, CommanderImpl())
 
       val gitHost: GitHost? = gitHostProvider.provide()
@@ -54,6 +56,9 @@ class Koshry {
 
       val baseSha = pullRequest?.baseSha
       val headSha = pullRequest?.headSha
+
+      logger.d { "baseSha $baseSha" }
+      logger.d { "headSha $headSha" }
 
       if (baseSha != null && headSha != null) {
 

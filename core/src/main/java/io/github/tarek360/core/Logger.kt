@@ -5,7 +5,7 @@ val logger: Logger = Logger()
 
 class Logger {
 
-  val debugable = false
+  val debugable = true
 
   val ANSI_RED = "\u001B[31m"
   val ANSI_YELLOW = "\u001B[33m"

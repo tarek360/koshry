@@ -30,7 +30,7 @@ jobs:
 
     # run tests!
     - run:
-        name: Build
+        name: Run tests
         command: gradle test --stacktrace
 
     - run:
