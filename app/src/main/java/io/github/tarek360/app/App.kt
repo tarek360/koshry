@@ -19,12 +19,11 @@ fun main(_args: Array<String>) {
                     filePath = ".circleci/config.yml"
                     filePath = ".travis.yml"
                 }
-
             }
 
             rule = lineRule {
-                condition = { line -> line.contains("google-services") }
-                reportTitle = "You use google-services 🤩"
+                condition = { line -> line.contains("detected") }
+                reportTitle = "I detected a 'detected' word 🤩"
                 issueLevel = WARN
             }
         }

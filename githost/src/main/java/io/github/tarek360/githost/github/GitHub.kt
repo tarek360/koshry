@@ -1,5 +1,6 @@
 package io.github.tarek360.githost.github
 
+import io.github.tarek360.core.DEBUGGABLE
 import io.github.tarek360.core.cl.CommanderImpl
 import io.github.tarek360.core.logger
 import io.github.tarek360.githost.Comment
@@ -35,10 +36,15 @@ class GitHub(private val gitHostInfo: GitHostInfo) : GitHost {
 
     val logger = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { m -> logger.d { m } })
 
-    logger.level = HttpLoggingInterceptor.Level.BODY
+    logger.level = HttpLoggingInterceptor.Level.BASIC
 
-    val okhttp = OkHttpClient.Builder().addInterceptor(logger).build()
+    val okhttpBuilder = OkHttpClient.Builder()
 
+    if(DEBUGGABLE){
+      okhttpBuilder.addInterceptor(logger)
+    }
+
+    val okhttp = okhttpBuilder.build()
 
     val request = Request.Builder()
         .url(url)
