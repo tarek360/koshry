@@ -1,6 +1,6 @@
-package io.github.tarek360.gitdiff.model
+package io.github.tarek360.gitdiff
 
-class Parser {
+internal class Parser {
 
   data class StartCount(val start: Int, val count: Int)
 

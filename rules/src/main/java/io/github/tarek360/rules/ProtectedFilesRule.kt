@@ -1,7 +1,7 @@
 package io.github.tarek360.rules
 
 import io.github.tarek360.gitdiff.GitDiff
-import io.github.tarek360.gitdiff.model.GitFile
+import io.github.tarek360.gitdiff.GitFile
 import io.github.tarek360.rules.ProtectedFilesRule.ProtectedFileRuleBuilder
 import io.github.tarek360.rules.report.Issue
 import io.github.tarek360.rules.report.Level
@@ -19,6 +19,7 @@ class ProtectedFilesRule private constructor(
   override fun apply(gitDiff: GitDiff): Report? {
     report = Report(reportTitle, arrayListOf())
     applyToFiles(gitDiff.getModifiedFiles())
+    applyToFiles(gitDiff.getDeletedFiles())
     return report.takeIf {
       report.issues.isNotEmpty()
     }

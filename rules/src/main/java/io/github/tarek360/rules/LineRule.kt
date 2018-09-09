@@ -1,17 +1,20 @@
 package io.github.tarek360.rules
 
 import io.github.tarek360.gitdiff.GitDiff
-import io.github.tarek360.gitdiff.model.GitFile
+import io.github.tarek360.gitdiff.GitFile
 import io.github.tarek360.rules.LineRule.LineRuleBuilder
+import io.github.tarek360.rules.model.File
+import io.github.tarek360.rules.model.Line
 import io.github.tarek360.rules.report.Issue
 import io.github.tarek360.rules.report.Level
 import io.github.tarek360.rules.report.Level.INFO
 import io.github.tarek360.rules.report.Report
 
-class LineRule private constructor(
-    var condition: (String) -> Boolean,
-    private var reportTitle: String,
-    private var issueLevel: Level
+
+class LineRule  constructor(
+        var condition: (File, Line) -> Boolean,
+        private var reportTitle: String,
+        private var issueLevel: Level
 ) : Rule {
 
   private lateinit var report: Report
@@ -28,7 +31,7 @@ class LineRule private constructor(
   private fun applyToFiles(gitFiles: List<GitFile>) {
     gitFiles.forEach { file ->
       file.addedLines.forEach { line ->
-        if (condition(line.text)) {
+        if (condition(File(file), Line(line))) {
           val msg = "Line --> **${line.number}** , File --> **${file.path}**"
           report.issues.add(Issue(msg = msg, level = issueLevel, filePath = file.path, lineNumber = line.number))
         }
@@ -38,7 +41,7 @@ class LineRule private constructor(
 
   @RuleDsl
   class LineRuleBuilder {
-    lateinit var condition: (String) -> Boolean // Required
+    lateinit var condition: (File, Line) -> Boolean // Required
     var reportTitle = "Line Rule" // Optional
     var issueLevel: Level = INFO // Optional
 

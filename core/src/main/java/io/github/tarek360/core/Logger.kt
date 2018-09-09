@@ -1,6 +1,6 @@
 package io.github.tarek360.core
 
-const val DEBUGGABLE = true
+const val DEBUGGABLE = false
 
 val logger: Logger = Logger()
 

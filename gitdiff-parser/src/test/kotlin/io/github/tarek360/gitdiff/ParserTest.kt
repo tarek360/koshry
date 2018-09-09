@@ -1,4 +1,4 @@
-package io.github.tarek360.gitdiff.model
+package io.github.tarek360.gitdiff
 
 import io.github.tarek360.core.mustEqual
 import io.github.tarek360.core.mustHaveSize

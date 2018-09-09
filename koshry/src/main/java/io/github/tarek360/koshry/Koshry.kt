@@ -95,8 +95,11 @@ class Koshry {
 
       val fileUrlGenerator: FileUrlGenerator = LocalFileUrlGenerator()
 
-      val baseSha = "3974ee3ae75d42ea9786486f9885ebb6e2d27ee6"
-      val headSha = "2739ec582e38c4a8b277acc68bab5b23ffca46a7"
+//      val baseSha = "3974ee3ae75d42ea9786486f9885ebb6e2d27ee6"
+//      val headSha = "2739ec582e38c4a8b277acc68bab5b23ffca46a7"
+
+      val baseSha = "395264c9f53bc03847003a842c232139774d4270"
+      val headSha = "b6c227c30ed378f540deed0d62faa61eedb2d0f0"
 
       val comment = applyRules(baseSha, headSha, koshryConfig, fileUrlGenerator)
 

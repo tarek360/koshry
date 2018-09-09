@@ -19,8 +19,11 @@ version = "0.0.1"
 
 dependencies {
   implementation(kotlin("stdlib-jdk8"))
-
   implementation(project(":gitdiff-parser"))
+  testImplementation(project(":core"))
+  testImplementation("com.squareup.okhttp3:okhttp:3.8.1")
+  testImplementation("junit:junit:4.12")
+  testImplementation("org.mockito:mockito-core:2+")
 }
 
 java {
