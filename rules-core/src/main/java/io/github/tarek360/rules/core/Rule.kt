@@ -1,7 +1,6 @@
-package io.github.tarek360.rules
+package io.github.tarek360.rules.core
 
 import io.github.tarek360.gitdiff.GitDiff
-import io.github.tarek360.rules.report.Report
 
 interface Rule {
   fun apply(gitDiff: GitDiff): Report?

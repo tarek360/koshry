@@ -3,13 +3,10 @@ package io.github.tarek360.rules
 import io.github.tarek360.gitdiff.GitDiff
 import io.github.tarek360.gitdiff.GitFile
 import io.github.tarek360.rules.LineRule.LineRuleBuilder
+import io.github.tarek360.rules.core.*
 import io.github.tarek360.rules.model.File
 import io.github.tarek360.rules.model.Line
-import io.github.tarek360.rules.report.Issue
-import io.github.tarek360.rules.report.Level
-import io.github.tarek360.rules.report.Level.INFO
-import io.github.tarek360.rules.report.Report
-
+import io.github.tarek360.rules.core.Level.INFO
 
 class LineRule  constructor(
         var condition: (File, Line) -> Boolean,
@@ -20,7 +17,7 @@ class LineRule  constructor(
   private lateinit var report: Report
 
   override fun apply(gitDiff: GitDiff): Report? {
-    report = Report(reportTitle, arrayListOf())
+    report = Report(msgTitle = reportTitle)
     applyToFiles(gitDiff.getAddedFiles())
     applyToFiles(gitDiff.getModifiedFiles())
     return report.takeIf {

@@ -13,6 +13,7 @@ dependencies {
   implementation(kotlin("stdlib-jdk8"))
   implementation(project(":koshry"))
   implementation(project(":rules"))
+  implementation(project(":test-coverage-rule"))
 }
 
 java {

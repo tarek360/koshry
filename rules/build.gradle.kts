@@ -1,9 +1,10 @@
-import org.jetbrains.kotlin.config.KotlinCompilerVersion
+//import org.jetbrains.kotlin.config.KotlinCompilerVersion
 
 plugins {
   kotlin("jvm")
   id("java-library")
   id("maven-publish")
+  jacoco
 }
 
 apply { from("../mvn-push.gradle") }
@@ -14,16 +15,16 @@ repositories {
   mavenCentral()
 }
 
-group = "io.github.tarek360"
+group = "io.github.tarek360.koshry.rules"
 version = "0.0.1"
 
 dependencies {
   implementation(kotlin("stdlib-jdk8"))
-  implementation(project(":gitdiff-parser"))
-  testImplementation(project(":core"))
-  testImplementation("com.squareup.okhttp3:okhttp:3.8.1")
+  api(project(":gitdiff-parser"))
+  api(project(":core"))
+  api(project(":rules-core"))
+  api(project(":rules-test"))
   testImplementation("junit:junit:4.12")
-  testImplementation("org.mockito:mockito-core:2+")
 }
 
 java {

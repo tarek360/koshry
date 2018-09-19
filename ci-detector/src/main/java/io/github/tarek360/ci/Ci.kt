@@ -2,7 +2,7 @@ package io.github.tarek360.ci
 
 abstract class Ci {
 
-  val gitHostToken: String? by lazy {
+  open val gitHostToken: String? by lazy {
     Environment.getVariable("KOSHRY_GIT_HOST_TOKEN")
   }
 

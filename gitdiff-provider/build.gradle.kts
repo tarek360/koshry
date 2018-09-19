@@ -4,6 +4,7 @@ plugins {
   kotlin("jvm")
   id("java-library")
   id("maven-publish")
+  jacoco
 }
 
 apply { from("../mvn-push.gradle") }
@@ -19,7 +20,7 @@ version = "0.0.1"
 
 dependencies {
   implementation(kotlin("stdlib-jdk8"))
-  implementation(project(":core"))
+  api(project(":core"))
 }
 
 java {

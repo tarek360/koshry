@@ -1,7 +1,7 @@
 package io.github.tarek360.rules
 
-import io.github.tarek360.rules.report.Issue
-import io.github.tarek360.rules.report.Level
+import io.github.tarek360.rules.core.Issue
+import io.github.tarek360.rules.core.Level
 import io.github.tarek360.rules.test.testRule
 import org.junit.Test
 
@@ -41,8 +41,8 @@ class ProtectedFilesRuleTest {
                 .apply()
 
                 // Assert
-                .shouldHasIssue(expectedIssue = expectedIssue1)
-                .shouldHasIssue(expectedIssue = expectedIssue2)
-                .shouldHasIssuesCount(expectedCount = 2)
+                .assertHasIssue(expectedIssue = expectedIssue1)
+                .assertHasIssue(expectedIssue = expectedIssue2)
+                .assertIssuesCount(expectedCount = 2)
     }
 }

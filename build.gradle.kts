@@ -17,3 +17,5 @@ allprojects {
         jcenter()
     }
 }
+
+apply { from("jacoco/jacocoFullReport.gradle") }

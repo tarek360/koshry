@@ -1,6 +1,5 @@
 package io.github.tarek360.githost.github
 
-import io.github.tarek360.core.DEBUGGABLE
 import io.github.tarek360.core.cl.CommanderImpl
 import io.github.tarek360.githost.Comment
 import io.github.tarek360.githost.GitHost
@@ -14,9 +13,11 @@ import okhttp3.RequestBody
 import org.json.JSONObject
 import java.net.HttpURLConnection.HTTP_CREATED
 
+var githubApiBaseUrl: String = "https://api.github.com/"
+
 class GitHub(private val gitHostInfo: GitHostInfo) : GitHost {
 
-  private val apiBaseUrl: String = "https://api.github.com/repos/${gitHostInfo.ownerNameRepoName}"
+  private val apiReposUrl: String = "${githubApiBaseUrl}repos/${gitHostInfo.ownerNameRepoName}"
   private val githubCommitCommander = GithubCommitCommander(CommanderImpl(), gitHostInfo)
 
   override fun post(comment: Comment): String? = postPullRequestComment(comment)
@@ -30,7 +31,7 @@ class GitHub(private val gitHostInfo: GitHostInfo) : GitHost {
   }
 
   override fun getPullRequestInfo(): PullRequest? {
-    val url = "$apiBaseUrl/pulls/${gitHostInfo.pullRequestId}"
+    val url = "$apiReposUrl/pulls/${gitHostInfo.pullRequestId}"
 
     val request = Request.Builder()
         .url(url)
@@ -40,14 +41,14 @@ class GitHub(private val gitHostInfo: GitHostInfo) : GitHost {
 
     val response = okhttp.newCall(request).execute()
 
-    val json = response.body()?.string() ?: ""
+    val json = response.body()?.string()
 
     return PullRequestParser().parse(json)
   }
 
   private fun postPullRequestComment(comment: Comment): String? {
 
-    val url = "$apiBaseUrl/issues/${gitHostInfo.pullRequestId}/comments"
+    val url = "$apiReposUrl/issues/${gitHostInfo.pullRequestId}/comments"
 
     val bodyJson = JSONObject()
     bodyJson.put("body", comment.msg)
@@ -73,7 +74,7 @@ class GitHub(private val gitHostInfo: GitHostInfo) : GitHost {
 
   private fun postCommitStatus(status: Status) {
 
-    val url = "$apiBaseUrl/statuses/${status.sha}"
+    val url = "$apiReposUrl/statuses/${status.sha}"
 
     val bodyJson = JSONObject()
     bodyJson.put("context", status.context)

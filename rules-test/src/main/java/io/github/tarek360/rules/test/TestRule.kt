@@ -2,9 +2,9 @@ package io.github.tarek360.rules.test
 
 import io.github.tarek360.gitdiff.GitFile
 import io.github.tarek360.gitdiff.Line
-import io.github.tarek360.rules.Rule
-import io.github.tarek360.rules.report.Issue
-import io.github.tarek360.rules.report.Report
+import io.github.tarek360.rules.core.Rule
+import io.github.tarek360.rules.core.Issue
+import io.github.tarek360.rules.core.Report
 import org.hamcrest.CoreMatchers.hasItem
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThat
@@ -42,7 +42,7 @@ class TestRule internal constructor(private val rule: Rule) {
         return this
     }
 
-    fun shouldHasIssue(expectedIssue: Issue): TestRule {
+    fun assertHasIssue(expectedIssue: Issue): TestRule {
 
         val issues = report?.issues
 
@@ -54,15 +54,20 @@ class TestRule internal constructor(private val rule: Rule) {
         return this
     }
 
-    fun shouldHasIssuesCount(expectedCount: Int): TestRule {
+    fun assertIssuesCount(expectedCount: Int): TestRule {
 
         val issues = report?.issues
 
         if (issues == null) {
-            throw RuntimeException()
+            assertEquals("unexpected size", expectedCount, 0)
         } else {
             assertEquals("unexpected size", expectedCount, issues.size)
         }
+        return this
+    }
+
+    fun assertNoIssues(): TestRule {
+        assertIssuesCount(0)
         return this
     }
 }

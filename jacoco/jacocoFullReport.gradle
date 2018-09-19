@@ -1,0 +1,48 @@
+apply plugin: 'jacoco'
+
+def jacocoVersion = "0.8.2"
+
+jacoco {
+  toolVersion = "$jacocoVersion"
+}
+
+task jacocoFullReport(type: JacocoReport) {
+  group = 'Reporting'
+  description = 'generate one jacoco report for all modules'
+
+  final Set<Task> myJacocoTasks = new HashSet<>()
+  myJacocoTasks.add(subprojects.find { it.name == 'core' }.getTasksByName("jacocoTestReport", false))
+  myJacocoTasks.add(subprojects.find { it.name == 'gitdiff-provider' }.getTasksByName("jacocoTestReport", false))
+  myJacocoTasks.add(subprojects.find { it.name == 'gitdiff-parser' }.getTasksByName("jacocoTestReport", false))
+  myJacocoTasks.add(subprojects.find { it.name == 'githost' }.getTasksByName("jacocoTestReport", false))
+  myJacocoTasks.add(subprojects.find { it.name == 'rules' }.getTasksByName("jacocoTestReport", false))
+  myJacocoTasks.add(subprojects.find { it.name == 'koshry' }.getTasksByName("jacocoTestReport", false))
+  myJacocoTasks.add(subprojects.find { it.name == 'ci-detector' }.getTasksByName("jacocoTestReport", false))
+  myJacocoTasks.add(subprojects.find { it.name == 'test-coverage-rule' }.getTasksByName("jacocoTestReport", false))
+  dependsOn myJacocoTasks
+
+  executionData = project.files(myJacocoTasks*.executionData)
+  classDirectories = project.files(myJacocoTasks*.classDirectories)
+  sourceDirectories = project.files(myJacocoTasks*.sourceDirectories)
+
+  def reportsDir = "${project.buildDir}/reports/jacoco"
+
+  reports {
+    xml {
+      enabled = true
+      destination file("${reportsDir}/jacoco.xml")
+    }
+    html {
+      enabled = true
+      destination file("${reportsDir}/html")
+    }
+    csv {
+      enabled = true
+      destination file("${reportsDir}/jacoco.csv")
+    }
+  }
+
+  doFirst {
+    executionData = project.files(executionData.findAll { it.exists() })
+  }
+}

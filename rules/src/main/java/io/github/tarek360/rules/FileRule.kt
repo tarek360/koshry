@@ -3,11 +3,9 @@ package io.github.tarek360.rules
 import io.github.tarek360.gitdiff.GitDiff
 import io.github.tarek360.gitdiff.GitFile
 import io.github.tarek360.rules.FileRule.FileRuleBuilder
+import io.github.tarek360.rules.core.*
 import io.github.tarek360.rules.model.File
-import io.github.tarek360.rules.report.Issue
-import io.github.tarek360.rules.report.Level
-import io.github.tarek360.rules.report.Level.INFO
-import io.github.tarek360.rules.report.Report
+import io.github.tarek360.rules.core.Level.INFO
 
 class FileRule private constructor(
         var condition: (File) -> Boolean,
@@ -18,7 +16,7 @@ class FileRule private constructor(
     private lateinit var report: Report
 
     override fun apply(gitDiff: GitDiff): Report? {
-        report = Report(reportTitle, arrayListOf())
+        report = Report(msgTitle = reportTitle)
         applyToFiles(gitDiff.getAddedFiles())
         applyToFiles(gitDiff.getModifiedFiles())
         return report.takeIf {

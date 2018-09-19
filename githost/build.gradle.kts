@@ -4,6 +4,7 @@ plugins {
   kotlin("jvm")
   id("java-library")
   id("maven-publish")
+  jacoco
 }
 
 apply { from("../mvn-push.gradle") }
@@ -17,7 +18,7 @@ repositories {
 group = "io.github.tarek360"
 version = "0.0.1"
 
-val okHttpVersion = "3.8.1"
+val okHttpVersion = "3.11.0"
 
 dependencies {
   implementation(kotlin("stdlib-jdk8"))
@@ -27,6 +28,7 @@ dependencies {
   implementation("com.squareup.okhttp3:okhttp:$okHttpVersion")
 
   implementation("org.json:json:20160810")
+  testImplementation("junit:junit:4.12")
 }
 
 java {

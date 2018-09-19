@@ -3,11 +3,12 @@ package io.github.tarek360.koshry
 import io.github.tarek360.core.cl.Commander
 import io.github.tarek360.githost.GitHost
 import io.github.tarek360.githost.GitHostInfo
+import io.github.tarek360.githost.UnknownGitHost
 import io.github.tarek360.githost.github.GitHub
 
-class GitHostProvider(val gitHostInfo: GitHostInfo, val commander: Commander) {
+open class GitHostProvider(private val gitHostInfo: GitHostInfo, private val commander: Commander) {
 
-  fun provide(): GitHost? {
+  open fun provide(): GitHost {
 
     val output = commander.executeCL("git config --get remote.origin.url")
 
@@ -19,7 +20,7 @@ class GitHostProvider(val gitHostInfo: GitHostInfo, val commander: Commander) {
 
     return when (gitHostType) {
       GitHostType.GITHUB -> GitHub(gitHostInfo)
-      else -> null
+      else -> UnknownGitHost()
     }
 
   }

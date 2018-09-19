@@ -2,14 +2,17 @@ package io.github.tarek360.app
 
 import io.github.tarek360.koshry.Koshry
 import io.github.tarek360.koshry.koshry
+import io.github.tarek360.rules.coverage.jacocoCoverageRule
 import io.github.tarek360.rules.lineRule
 import io.github.tarek360.rules.fileRule
 import io.github.tarek360.rules.protectedFileRule
-import io.github.tarek360.rules.report.Level.ERROR
+import io.github.tarek360.rules.core.Level.ERROR
 
 fun main(_args: Array<String>) {
 
     val configuration = koshry {
+
+        baseSha = ""
 
         rules {
             rule = protectedFileRule {
@@ -34,6 +37,13 @@ fun main(_args: Array<String>) {
                 }
                 reportTitle = "Don't add new Java files, use Kotlin instead."
                 issueLevel = ERROR
+            }
+
+            // JaCoCo Test Coverage Rule
+            rule = jacocoCoverageRule {
+                classCoverageThreshold = 79 //79%
+                csvFilePath = "build/reports/jacoco/jacoco.csv"
+                htmlFilePath = "https://tarek360.github.io/koshry/build/reports/"
             }
         }
     }

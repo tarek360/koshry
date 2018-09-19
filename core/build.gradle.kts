@@ -4,6 +4,7 @@ plugins {
   kotlin("jvm")
   id("java-library")
   id("maven-publish")
+  jacoco
 }
 
 apply { from("../mvn-push.gradle") }

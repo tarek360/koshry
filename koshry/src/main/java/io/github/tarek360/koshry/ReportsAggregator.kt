@@ -1,18 +1,18 @@
 package io.github.tarek360.koshry
 
 import io.github.tarek360.koshry.url.FileUrlGenerator
-import io.github.tarek360.rules.report.Level.ERROR
-import io.github.tarek360.rules.report.Level.INFO
-import io.github.tarek360.rules.report.Level.WARN
-import io.github.tarek360.rules.report.Report
+import io.github.tarek360.rules.core.Level.ERROR
+import io.github.tarek360.rules.core.Level.INFO
+import io.github.tarek360.rules.core.Level.WARN
+import io.github.tarek360.rules.core.Report
 
-class ReportsAggregator(private val fileUrlGenerator: FileUrlGenerator) {
+open class ReportsAggregator(private val fileUrlGenerator: FileUrlGenerator) {
 
   companion object {
     const val KOSHRY_REPORT_TITLE = "## Koshry Report\n\n"
   }
 
-  fun aggregate(reports: List<Report>): String {
+  open fun aggregate(reports: List<Report>): String {
 
     val commentBuilder = StringBuilder(KOSHRY_REPORT_TITLE)
 
@@ -28,10 +28,12 @@ class ReportsAggregator(private val fileUrlGenerator: FileUrlGenerator) {
           .append('|')
           .append("Status")
           .append('|')
-          .append(report.title)
+          .append(report.msgTitle)
+          .append('|')
+          .append(report.descTitle)
           .append('|')
           .append('\n')
-          .append("|:-:|-|")
+          .append("|:-:|-|:-:|")
           .append('\n')
 
       report.issues.forEach { issue ->
@@ -49,11 +51,15 @@ class ReportsAggregator(private val fileUrlGenerator: FileUrlGenerator) {
           INFO -> "ℹ️"
         }
 
+        val desc = issue.description
+
         commentBuilder
             .append('|')
             .append(levelIcon)
             .append('|')
             .append(message)
+            .append('|')
+            .append(desc)
             .append('|')
             .append('\n')
       }
