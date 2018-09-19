@@ -17,7 +17,7 @@ fun main(_args: Array<String>) {
         rules {
             rule = protectedFileRule {
                 reportTitle = "Files are protected and can't be modified, ask @tarek360 to modify"
-                issueLevel = ERROR
+                issueLevel = ERROR()
                 files {
                     filePath = ".circleci/config.yml"
                     filePath = ".travis.yml"
@@ -27,7 +27,7 @@ fun main(_args: Array<String>) {
             rule = lineRule {
                 condition = { file , line -> line.text.contains("System.getenv") }
                 reportTitle = "Don't use System.getenv directly, use Environment.getVariable instead."
-                issueLevel = ERROR
+                issueLevel = ERROR()
             }
 
             // Rule to prevent anyone from adding new java code.
@@ -36,7 +36,7 @@ fun main(_args: Array<String>) {
                     file.isAdded && file.name.endsWith(".java")
                 }
                 reportTitle = "Don't add new Java files, use Kotlin instead."
-                issueLevel = ERROR
+                issueLevel = ERROR()
             }
 
             // JaCoCo Test Coverage Rule

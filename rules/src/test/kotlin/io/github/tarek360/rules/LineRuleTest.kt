@@ -18,7 +18,7 @@ class LineRuleTest {
                         && line.text.contains("make a crash")
             }
             reportTitle = "Don't create bugs."
-            issueLevel = Level.ERROR
+            issueLevel = Level.ERROR()
         }
 
         val linesWithIssue = listOf(
@@ -33,13 +33,13 @@ class LineRuleTest {
 
         val expectedIssue1 = Issue(
                 msg = "Line --> **3** , File --> **core/network/Call.java**",
-                level = Level.ERROR,
+                level = Level.ERROR(),
                 filePath = "core/network/Call.java",
                 lineNumber = 3)
 
         val expectedIssue2 = Issue(
                 msg = "Line --> **3** , File --> **core/network/http/Request.java**",
-                level = Level.ERROR,
+                level = Level.ERROR(),
                 filePath = "core/network/http/Request.java",
                 lineNumber = 3)
 

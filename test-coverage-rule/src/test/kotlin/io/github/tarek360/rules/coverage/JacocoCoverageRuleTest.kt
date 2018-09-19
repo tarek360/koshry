@@ -48,29 +48,29 @@ class JacocoCoverageRuleTest {
 
         val expectedIssue1 = Issue(
                 msg = "**com/android/game/App**",
-                level = Level.INFO,
+                level = Level.INFO("🏆"),
                 filePath = "$htmlFilePath${separator}com.android.game${separator}App.html",
-                description = "🏆 **95%**")
+                description = "**95%**")
 
 
         val expectedIssue2 = Issue(
                 msg = "**com/android/game/Activity**",
-                level = Level.INFO,
+                level = Level.INFO("✅"),
                 filePath = "$htmlFilePath${separator}com.android.game${separator}Activity.html",
-                description = "✅ **80%**")
+                description = "**80%**")
 
 
         val expectedIssue3 = Issue(
                 msg = "**com/android/game/Presenter**",
-                level = Level.ERROR,
+                level = Level.ERROR("💣"),
                 filePath = "$htmlFilePath${separator}com.android.game${separator}Presenter.html",
-                description = "💣 **50%**")
+                description = "**50%**")
 
         val expectedIssue4 = Issue(
                 msg = "**com/android/game/Presenter\$InnerClass**",
-                level = Level.ERROR,
+                level = Level.ERROR("💣"),
                 filePath = "$htmlFilePath${separator}com.android.game${separator}Presenter\$InnerClass.html",
-                description = "💣 **30%**")
+                description = "**30%**")
 
 
         testRule(rule)
@@ -104,9 +104,9 @@ class JacocoCoverageRuleTest {
 
         val expectedIssue = Issue(
                 msg = "**com/android/game/App**",
-                level = Level.INFO,
+                level = Level.INFO("🏆"),
                 filePath = "com.android.game${separator}App.html",
-                description = "🏆 **95%**")
+                description = "**95%**")
 
         testRule(rule)
                 .withAddedFile(file = "src/main/java/com/android/game/App.java")

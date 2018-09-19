@@ -32,7 +32,7 @@ class RulesMan(private val reportsAggregator: ReportsAggregator) {
 
     private fun hasFailedIssue(issues: MutableList<Issue>): Boolean {
         for (issue in issues) {
-            if (issue.level == Level.ERROR) {
+            if (issue.level is Level.ERROR) {
                 return true
             }
         }

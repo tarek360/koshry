@@ -37,7 +37,7 @@ class FileRule private constructor(
     class FileRuleBuilder {
         lateinit var condition: (File) -> Boolean // Required
         var reportTitle = "File Rule" // Optional
-        var issueLevel: Level = INFO // Optional
+        var issueLevel: Level = INFO() // Optional
 
         fun build(): FileRule = FileRule(condition, reportTitle, issueLevel)
     }

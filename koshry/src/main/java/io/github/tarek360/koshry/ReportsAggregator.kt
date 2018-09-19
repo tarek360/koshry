@@ -45,17 +45,13 @@ open class ReportsAggregator(private val fileUrlGenerator: FileUrlGenerator) {
         } else {
           issue.msg
         }
-        val levelIcon = when (issue.level) {
-          ERROR -> "❌"
-          WARN -> "⚠️"
-          INFO -> "ℹ️"
-        }
 
+        val levelText = issue.level.text
         val desc = issue.description
 
         commentBuilder
             .append('|')
-            .append(levelIcon)
+            .append(levelText)
             .append('|')
             .append(message)
             .append('|')

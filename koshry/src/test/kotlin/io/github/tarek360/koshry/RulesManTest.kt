@@ -66,13 +66,13 @@ class RulesManTest {
         comment.msg mustEqual markdown
     }
 
-    private fun getPassedReport(): Report = getReport(Level.INFO)
+    private fun getPassedReport(): Report = getReport(Level.INFO())
 
-    private fun getFailedReport(): Report = getReport(Level.ERROR)
+    private fun getFailedReport(): Report = getReport(Level.ERROR())
 
     private fun getReport(level: Level): Report {
         val issue1 = Issue("issue 1", level)
-        val issue2 = Issue("issue 2", Level.INFO)
+        val issue2 = Issue("issue 2", Level.INFO())
         return Report("Report", issues = arrayListOf(issue1, issue2))
     }
 }

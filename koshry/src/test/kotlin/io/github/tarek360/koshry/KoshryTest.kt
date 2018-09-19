@@ -38,7 +38,7 @@ class KoshryTest {
                         file.isAdded && file.name.endsWith(".java")
                     }
                     reportTitle = "Don't add new Java files, use Kotlin instead."
-                    issueLevel = Level.ERROR
+                    issueLevel = Level.ERROR()
                 }
             }
         }
@@ -58,7 +58,7 @@ class KoshryTest {
                         file.isAdded && file.name.endsWith(".java")
                     }
                     reportTitle = "Don't add new Java files, use Kotlin instead."
-                    issueLevel = Level.ERROR
+                    issueLevel = Level.ERROR()
                 }
             }
         }

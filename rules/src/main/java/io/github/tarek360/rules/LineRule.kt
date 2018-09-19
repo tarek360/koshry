@@ -40,7 +40,7 @@ class LineRule  constructor(
   class LineRuleBuilder {
     lateinit var condition: (File, Line) -> Boolean // Required
     var reportTitle = "Line Rule" // Optional
-    var issueLevel: Level = INFO // Optional
+    var issueLevel: Level = INFO() // Optional
 
     fun build(): LineRule = LineRule(condition, reportTitle, issueLevel)
   }

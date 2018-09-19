@@ -13,7 +13,7 @@ class ProtectedFilesRuleTest {
         // Arrange
         val rule = protectedFileRule {
             reportTitle = "Files are protected and can't be modified, ask @tarek360 to modify"
-            issueLevel = Level.WARN
+            issueLevel = Level.WARN()
             files {
                 filePath = "secured/CriticalFile1.txt"
                 filePath = "CriticalFile2"
@@ -22,12 +22,12 @@ class ProtectedFilesRuleTest {
 
         val expectedIssue1 = Issue(
                 msg = "File --> **secured/CriticalFile1.txt**",
-                level = Level.WARN,
+                level = Level.WARN(),
                 filePath = "secured/CriticalFile1.txt")
 
         val expectedIssue2 = Issue(
                 msg = "File --> **CriticalFile2**",
-                level = Level.WARN,
+                level = Level.WARN(),
                 filePath = "CriticalFile2")
 
         testRule(rule)

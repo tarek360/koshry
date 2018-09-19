@@ -81,13 +81,13 @@ class JacocoCoverageRule internal constructor(
 
         when {
             classCoverage.coveredBranches in 95..100 ->
-                report.issues.add(Issue(level = INFO, filePath = filePath, msg = msg, description = "🏆 $coverage"))
+                report.issues.add(Issue(level = INFO("🏆"), filePath = filePath, msg = msg, description = coverage))
 
             classCoverage.coveredBranches >= classCoverageThreshold ->
-                report.issues.add(Issue(level = INFO, filePath = filePath, msg = msg, description = "✅ $coverage"))
+                report.issues.add(Issue(level = INFO("✅"), filePath = filePath, msg = msg, description = coverage))
 
             classCoverage.coveredBranches < classCoverageThreshold ->
-                report.issues.add(Issue(level = ERROR, filePath = filePath, msg = msg, description = "💣 $coverage"))
+                report.issues.add(Issue(level = ERROR("💣"), filePath = filePath, msg = msg, description = coverage))
 
         }
     }

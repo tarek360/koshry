@@ -44,7 +44,7 @@ class ProtectedFilesRule private constructor(
     }
 
     var reportTitle = "Protected File" // Optional
-    var issueLevel: Level = INFO // Optional
+    var issueLevel: Level = INFO() // Optional
 
     fun build(): ProtectedFilesRule = ProtectedFilesRule(files, reportTitle, issueLevel)
   }

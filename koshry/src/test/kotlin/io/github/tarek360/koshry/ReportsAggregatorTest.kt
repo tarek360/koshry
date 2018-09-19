@@ -32,14 +32,14 @@ class ReportsAggregatorTest {
 
                 Report(msgTitle = "Don't add any image files",
                         issues = arrayListOf(
-                                Issue("JPG File", Level.ERROR, "path/file"),
-                                Issue("PNG File", Level.WARN, "path/file"),
-                                Issue("SVG File", Level.INFO)
+                                Issue("JPG File", Level.ERROR(), "path/file"),
+                                Issue("PNG File", Level.WARN(), "path/file"),
+                                Issue("SVG File", Level.INFO())
                         )),
 
                 Report(msgTitle = "Company Name Typo",
                         issues = arrayListOf(
-                                Issue("Not koshory", Level.ERROR, "path/file", 44)
+                                Issue("Not koshory", Level.ERROR(), "path/file", 44)
                         ))
         )
 
