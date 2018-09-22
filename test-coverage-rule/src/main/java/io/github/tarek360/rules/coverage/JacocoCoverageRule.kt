@@ -16,7 +16,7 @@ class JacocoCoverageRule internal constructor(
         private var csvFilePath: String,
         private var htmlFilePath: String?,
         private val csvParser : CsvParser
-) : Rule {
+) : Rule() {
 
 
     companion object {
@@ -29,7 +29,7 @@ class JacocoCoverageRule internal constructor(
 
     private val separator = System.getProperty("file.separator")
 
-    override fun apply(gitDiff: GitDiff): Report? {
+    override fun run(): Report? {
         report = Report(REPORT_TITLE, COVERAGE_TITLE)
         classesCoverage = csvParser.parse(csvFilePath)
 

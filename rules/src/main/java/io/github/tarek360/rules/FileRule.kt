@@ -1,6 +1,5 @@
 package io.github.tarek360.rules
 
-import io.github.tarek360.gitdiff.GitDiff
 import io.github.tarek360.gitdiff.GitFile
 import io.github.tarek360.rules.FileRule.FileRuleBuilder
 import io.github.tarek360.rules.core.*
@@ -11,11 +10,11 @@ class FileRule private constructor(
         var condition: (File) -> Boolean,
         private var reportTitle: String,
         private var issueLevel: Level
-) : Rule {
+) : Rule() {
 
     private lateinit var report: Report
 
-    override fun apply(gitDiff: GitDiff): Report? {
+    override fun run(): Report? {
         report = Report(msgTitle = reportTitle)
         applyToFiles(gitDiff.getAddedFiles())
         applyToFiles(gitDiff.getModifiedFiles())

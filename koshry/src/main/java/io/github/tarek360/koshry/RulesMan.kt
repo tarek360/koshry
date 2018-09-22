@@ -17,7 +17,8 @@ class RulesMan(private val reportsAggregator: ReportsAggregator) {
         val gitDiff = GitDiffProvider.provide(baseSha, headSha)
 
         val reports = rules.mapNotNull { rule ->
-            val report = rule.apply(gitDiff)
+            rule.init(gitDiff)
+            val report = rule.run()
             if (!shouldFail) {
                 report?.let {
                     shouldFail = hasFailedIssue(report.issues)

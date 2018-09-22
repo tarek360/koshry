@@ -35,4 +35,12 @@ open class GitHostProvider(private val gitHostInfo: GitHostInfo, private val com
       }
     }
   }
+
+  enum class GitHostType {
+    UNKNOWN,
+    GITHUB,
+    BITBUCKET,
+    GITLAB
+  }
+
 }

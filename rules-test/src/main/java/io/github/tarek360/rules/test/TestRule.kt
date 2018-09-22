@@ -38,7 +38,8 @@ class TestRule internal constructor(private val rule: Rule) {
 
     fun apply(): TestRule {
         val gitDiffTest = TestGitDiff(addedFiles, deletedFiles, modifiedFiles)
-        report = rule.apply(gitDiffTest)
+        rule.init(gitDiffTest)
+        report = rule.run()
         return this
     }
 

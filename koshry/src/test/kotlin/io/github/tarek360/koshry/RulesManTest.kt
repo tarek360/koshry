@@ -35,8 +35,8 @@ class RulesManTest {
         val report2 = getPassedReport()
         val rule1 = mock(Rule::class.java)
         val rule2 = mock(Rule::class.java)
-        whenever(rule1.apply(anyOrNull())).thenReturn(report1)
-        whenever(rule2.apply(anyOrNull())).thenReturn(report2)
+        whenever(rule1.run()).thenReturn(report1)
+        whenever(rule2.run()).thenReturn(report2)
 
         val markdown = "## my markdown"
         whenever(reportsAggregator.aggregate(listOf(report1, report2))).thenReturn(markdown)
@@ -53,7 +53,7 @@ class RulesManTest {
     fun test_withNullReport() {
         // Arrange
         val rule = mock(Rule::class.java)
-        whenever(rule.apply(anyOrNull())).thenReturn(null)
+        whenever(rule.run()).thenReturn(null)
 
         val markdown = "## passed"
         whenever(reportsAggregator.aggregate(emptyList())).thenReturn(markdown)
