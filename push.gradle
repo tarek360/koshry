@@ -1,0 +1,84 @@
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+javadoc.failOnError = false
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+
+def pomConfig = {
+    licenses {
+        license {
+            name "The Apache Software License, Version 2.0"
+            url "http://www.apache.org/licenses/LICENSE-2.0.txt"
+            distribution "repo"
+        }
+    }
+    developers {
+        developer {
+            id "tarek360"
+            name "tarek360"
+            email "a.tarek360@gmail.com"
+        }
+    }
+
+    scm {
+        url "https://github.com/tarek360/koshry"
+    }
+}
+
+publishing {
+    publications {
+        mavenPublication(MavenPublication) {
+            from components.java
+            artifact sourcesJar {
+                classifier "sources"
+            }
+            artifact javadocJar {
+                classifier "javadoc"
+            }
+            groupId GROUP_ID
+            artifactId ARTIFACT_ID
+            version VERSION
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', 'Koshry for CI!')
+                root.appendNode('name', 'Koshry')
+                root.appendNode('url', 'https://github.com/tarek360/koshry')
+                root.children().last() + pomConfig
+            }
+        }
+    }
+}
+
+bintray {
+    user = bintray_user
+    key = bintray_key
+    publications = ['mavenPublication']
+    override = true
+    pkg {
+        repo = BINTRAY_REPO
+        name = GROUP_ID
+        userOrg = 'tarek360'
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/tarek360/koshry.git'
+        version {
+            name = VERSION
+            desc = VERSION
+            released  = new Date()
+        }
+    }
+
+}

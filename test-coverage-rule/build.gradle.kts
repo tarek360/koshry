@@ -7,7 +7,7 @@ plugins {
   jacoco
 }
 
-apply { from("../mvn-push.gradle") }
+apply { from("../push.gradle") }
 
 repositories {
   mavenLocal()
