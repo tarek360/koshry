@@ -2,6 +2,7 @@ import java.io.BufferedReader
 
 tasks.create<DefaultTask>("release") {
 
+    val releaseBranch = "master"
     val currentBranch = executeCommand("git rev-parse --abbrev-ref HEAD")[0]
 
     val bintrayUploadTasks = subprojects.mapNotNull {
@@ -13,11 +14,16 @@ tasks.create<DefaultTask>("release") {
         }
     }
 
-    if (currentBranch == "master") {
-        println("Releasing from master branch!")
+    if (currentBranch == releaseBranch) {
         finalizedBy(bintrayUploadTasks)
-    } else {
-        println("No master! No release!")
+    }
+
+    doFirst {
+        if (currentBranch == releaseBranch) {
+            println("Releasing from master branch!")
+        } else {
+            println("No master! No release!")
+        }
     }
 }
 

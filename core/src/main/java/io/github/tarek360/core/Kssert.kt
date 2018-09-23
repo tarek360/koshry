@@ -4,6 +4,9 @@ import org.hamcrest.CoreMatchers.instanceOf
 import org.junit.Assert.*
 
 infix fun Any.mustEqual(expected: Any) = assertEquals(expected, this)
+infix fun Any.mustNotEqual(expected: Any) = assertNotEquals(expected, this)
+fun Any?.mustNotNull() = assertNotNull(this)
+fun Any?.mustNull() = assertNull(this)
 infix fun Any.mustInstanceOf(expected: Class<*>) = assertThat(this, instanceOf(expected))
 
 infix fun Any?.mustEqualAndNotNull(expected: Any) {

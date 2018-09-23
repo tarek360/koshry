@@ -39,7 +39,7 @@ class GitHostControllerTest {
     @Test
     fun getPullRequestInfo() {
         // Arrange
-        val expectedPullRequest = PullRequest("abc", "cde")
+        val expectedPullRequest = PullRequest("abc", "cde", "tarek360")
         whenever(gitHost.getPullRequestInfo()).thenReturn(expectedPullRequest)
 
 

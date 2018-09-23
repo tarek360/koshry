@@ -1,14 +1,13 @@
 package io.github.tarek360.koshry
 
-import com.nhaarman.mockitokotlin2.anyOrNull
 import com.nhaarman.mockitokotlin2.whenever
 import io.github.tarek360.core.mustEqual
-import io.github.tarek360.gitdiff.GitDiffProvider
-import io.github.tarek360.rules.core.Issue
-import io.github.tarek360.rules.core.Level
-import io.github.tarek360.rules.core.Report
+import io.github.tarek360.rules.core.Ci
+import io.github.tarek360.rules.core.PullRequest
 import io.github.tarek360.rules.core.Rule
-import org.junit.Before
+import io.github.tarek360.rules.core.Report
+import io.github.tarek360.rules.core.Level
+import io.github.tarek360.rules.core.Issue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
@@ -22,7 +21,9 @@ class RulesManTest {
     private lateinit var reportsAggregator: ReportsAggregator
 
     private val rulesMan by lazy {
-        RulesMan(reportsAggregator)
+        val pullRequest = PullRequest("","","")
+        val ci = Ci("",0,"", 0)
+        RulesMan(ci, pullRequest, reportsAggregator)
     }
 
     private val baseSha = "abc"

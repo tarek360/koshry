@@ -5,7 +5,10 @@ import io.github.tarek360.core.cl.CommanderImpl
 import io.github.tarek360.core.logger
 import io.github.tarek360.githost.Comment
 import io.github.tarek360.githost.GitHostInfo
+import io.github.tarek360.githost.PullRequest
 import io.github.tarek360.koshry.io.FileWriter
+import io.github.tarek360.koshry.mapper.CiModelMapper
+import io.github.tarek360.koshry.mapper.PullRequestModelMapper
 import io.github.tarek360.koshry.url.FileUrlGenerator
 import io.github.tarek360.koshry.url.GithubFileUrlGenerator
 import io.github.tarek360.koshry.url.LocalFileUrlGenerator
@@ -62,7 +65,7 @@ internal class KoshryRunner {
 
         val fileUrlGenerator: FileUrlGenerator = GithubFileUrlGenerator(gitHostInfo, Md5Generator())
 
-        val comment = applyRules(koshryConfig, fileUrlGenerator)
+        val comment = applyRules(ci, pullRequest, koshryConfig, fileUrlGenerator)
 
         val commentUrl = gitHostController.postComment(comment)
 
@@ -77,17 +80,19 @@ internal class KoshryRunner {
 
         val fileUrlGenerator: FileUrlGenerator = LocalFileUrlGenerator()
 
-        val comment = applyRules(koshryConfig, fileUrlGenerator)
+        val comment = applyRules(null, null, koshryConfig, fileUrlGenerator)
 
         val reportFilePath = "build/reports/koshry.md"
         FileWriter().writeToFile(reportFilePath, comment.msg)
     }
 
-    private fun applyRules(koshryConfig: KoshryConfig, fileUrlGenerator: FileUrlGenerator): Comment {
+    private fun applyRules(ci: Ci?, pullRequest: PullRequest?, koshryConfig: KoshryConfig, fileUrlGenerator: FileUrlGenerator): Comment {
 
         val reportsAggregator = ReportsAggregator(fileUrlGenerator)
+        val ciMapper = CiModelMapper()
+        val pullRequestMapper = PullRequestModelMapper()
 
-        val rulesMan = RulesMan(reportsAggregator)
+        val rulesMan = RulesMan(ciMapper.map(ci), pullRequestMapper.map(pullRequest), reportsAggregator)
         val comment = rulesMan.applyRules(koshryConfig.baseSha, koshryConfig.headSha, koshryConfig.rules)
 
         println("___________Markdown Comment___________")
