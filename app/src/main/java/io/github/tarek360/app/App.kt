@@ -15,14 +15,14 @@ fun main(_args: Array<String>) {
         baseSha = ""
 
         rules {
-            rule = protectedFileRule {
-                reportTitle = "Files are protected and can't be modified, ask @tarek360 to modify"
-                issueLevel = ERROR()
-                files {
-                    filePath = ".circleci/config.yml"
-                    filePath = ".travis.yml"
-                }
-            }
+//            rule = protectedFileRule {
+//                reportTitle = "Files are protected and can't be modified, ask @tarek360 to modify"
+//                issueLevel = ERROR()
+//                files {
+//                    filePath = ".circleci/config.yml"
+//                    filePath = ".travis.yml"
+//                }
+//            }
 
             rule = lineRule {
                 condition = { file , line -> line.text.contains("System.getenv") }

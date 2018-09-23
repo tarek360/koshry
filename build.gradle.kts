@@ -20,3 +20,4 @@ allprojects {
 }
 
 apply { from("jacoco/jacocoFullReport.gradle") }
+apply { from("auto_release.gradle.kts") }
