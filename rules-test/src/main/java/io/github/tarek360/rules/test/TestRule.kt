@@ -4,6 +4,7 @@ import io.github.tarek360.gitdiff.GitFile
 import io.github.tarek360.gitdiff.Line
 import io.github.tarek360.rules.core.Rule
 import io.github.tarek360.rules.core.Issue
+import io.github.tarek360.rules.core.PullRequest
 import io.github.tarek360.rules.core.Report
 import org.hamcrest.CoreMatchers.hasItem
 import org.junit.Assert.assertEquals
@@ -16,6 +17,7 @@ class TestRule internal constructor(private val rule: Rule) {
     private val addedFiles = mutableListOf<TestGitFile>()
     private val deletedFiles = mutableListOf<TestGitFile>()
     private val modifiedFiles = mutableListOf<TestGitFile>()
+    private var pullRequest: PullRequest? = null
     private var report: Report? = null
 
     fun withAddedFile(file: String, addedLines: List<Line> = emptyList())
@@ -36,9 +38,14 @@ class TestRule internal constructor(private val rule: Rule) {
         return this
     }
 
+    fun withPullRequest(pullRequest: PullRequest): TestRule {
+        this.pullRequest = pullRequest
+        return this
+    }
+
     fun apply(): TestRule {
         val gitDiffTest = TestGitDiff(addedFiles, deletedFiles, modifiedFiles)
-        rule.init(null, null, gitDiffTest)
+        rule.init(null, pullRequest, gitDiffTest)
         report = rule.run()
         return this
     }
