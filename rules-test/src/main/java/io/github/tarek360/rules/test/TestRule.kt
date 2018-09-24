@@ -50,6 +50,38 @@ class TestRule internal constructor(private val rule: Rule) {
         return this
     }
 
+    fun assertFirstIssue(expectedIssue: Issue): TestRule {
+        assertHasIssueAt(expectedIssue, 0)
+        return this
+    }
+
+    fun assertSecondIssue(expectedIssue: Issue): TestRule {
+        assertHasIssueAt(expectedIssue, 1)
+        return this
+    }
+
+    fun assertThirdIssue(expectedIssue: Issue): TestRule {
+        assertHasIssueAt(expectedIssue, 2)
+        return this
+    }
+
+    fun assertLastIssue(expectedIssue: Issue): TestRule {
+        if (report == null || report?.issues == null || report?.issues!!.isEmpty()) {
+            throw RuntimeException("No issues")
+        }
+        assertHasIssueAt(expectedIssue,  report?.issues?.size!! - 1)
+        return this
+    }
+
+    fun assertHasIssueAt(expectedIssue: Issue, position: Int): TestRule {
+        if (report == null || report?.issues == null || report?.issues!!.isEmpty()) {
+            throw RuntimeException("No issues")
+        }
+        val actualIssues = report?.issues?.get(position)
+        assertEquals(expectedIssue, actualIssues)
+        return this
+    }
+
     fun assertHasIssue(expectedIssue: Issue): TestRule {
 
         val issues = report?.issues

@@ -1,27 +1,25 @@
 package io.github.tarek360.rules.coverage
 
+import io.github.tarek360.core.bold
 import io.github.tarek360.core.filterThenMapIfNotNull
-import io.github.tarek360.gitdiff.GitDiff
 import io.github.tarek360.gitdiff.GitFile
+import io.github.tarek360.rules.core.*
 import io.github.tarek360.rules.coverage.JacocoCoverageRule.JacocoCoverageRuleBuilder
-import io.github.tarek360.rules.core.Issue
 import io.github.tarek360.rules.core.Level.ERROR
 import io.github.tarek360.rules.core.Level.INFO
-import io.github.tarek360.rules.core.Report
-import io.github.tarek360.rules.core.Rule
-import io.github.tarek360.rules.core.RuleDsl
 
 class JacocoCoverageRule internal constructor(
         private var classCoverageThreshold: Int,
         private var csvFilePath: String,
         private var htmlFilePath: String?,
-        private val csvParser : CsvParser
+        private val csvParser: CsvParser
 ) : Rule() {
 
 
     companion object {
         const val REPORT_TITLE = "JaCoCo Coverage Report"
         const val COVERAGE_TITLE = "Coverage"
+        const val PROJECT_TOTAL_COVERAGE_TITLE = "Project Total Coverage"
     }
 
     private lateinit var report: Report
@@ -33,16 +31,19 @@ class JacocoCoverageRule internal constructor(
         report = Report(REPORT_TITLE, COVERAGE_TITLE)
         classesCoverage = csvParser.parse(csvFilePath)
 
-        applyToFiles(gitDiff.getAddedFiles())
-        applyToFiles(gitDiff.getModifiedFiles())
+        checkFiles(gitDiff.getAddedFiles())
+        checkFiles(gitDiff.getModifiedFiles())
+
+        addTotalCoverage(classesCoverage.sumBy { it.coveredBranches } / classesCoverage.size)
+
         return report.takeIf {
             report.issues.isNotEmpty()
         }
     }
 
-    private fun applyToFiles(gitFiles: List<GitFile>) {
+    private fun checkFiles(gitFiles: List<GitFile>) {
 
-        gitFiles.filterThenMapIfNotNull { file ->
+        val touchedClasses = gitFiles.filterThenMapIfNotNull { file ->
 
             val inKotlinFile = file.path.split("${separator}kotlin$separator")
             val inJavaFile = file.path.split("${separator}java$separator")
@@ -54,24 +55,27 @@ class JacocoCoverageRule internal constructor(
                     null
                 }
             }
+        }
 
-        }.forEach { gitFilePath ->
-
-            classesCoverage.forEach { classCoverage ->
-
+        classesCoverage.forEach { classCoverage ->
+            touchedClasses.forEach { gitFilePath ->
                 if (classCoverage.filePath == gitFilePath || classCoverage.filePath.startsWith("$gitFilePath\$")) {
-                    //Inner class
-                    addIssue(classCoverage, gitFilePath)
+                    addIssue(classCoverage)
                 }
             }
         }
     }
 
-    private fun addIssue(classCoverage: ClassCoverage, gitFilePath: String) {
-        val msg = "**${classCoverage.filePath}**"
-        val coverage = "**${classCoverage.coveredBranches}%**"
+    private fun addTotalCoverage(totalCoverage: Int) {
+        val level = getLevel(totalCoverage)
+        report.issues.add(Issue(level = level, msg = PROJECT_TOTAL_COVERAGE_TITLE.bold(), description = "$totalCoverage%".bold()))
+    }
 
-        val name = classCoverage.fileName.replace('.','$')
+    private fun addIssue(classCoverage: ClassCoverage) {
+        val msg = classCoverage.filePath
+        val coverage = "${classCoverage.coveredBranches}%"
+
+        val name = classCoverage.fileName.replace('.', '$')
 
         val filePath = if (htmlFilePath != null) {
             "$htmlFilePath$separator${classCoverage.classPackage}$separator$name.html"
@@ -79,16 +83,15 @@ class JacocoCoverageRule internal constructor(
             "${classCoverage.classPackage}$separator$name.html"
         }
 
-        when {
-            classCoverage.coveredBranches in 95..100 ->
-                report.issues.add(Issue(level = INFO("🏆"), filePath = filePath, msg = msg, description = coverage))
+        val level = getLevel(classCoverage.coveredBranches)
+        report.issues.add(Issue(level = level, filePath = filePath, msg = msg, description = coverage))
+    }
 
-            classCoverage.coveredBranches >= classCoverageThreshold ->
-                report.issues.add(Issue(level = INFO("✅"), filePath = filePath, msg = msg, description = coverage))
-
-            classCoverage.coveredBranches < classCoverageThreshold ->
-                report.issues.add(Issue(level = ERROR("💣"), filePath = filePath, msg = msg, description = coverage))
-
+    private fun getLevel(totalCoverage: Int): Level {
+        return when {
+            totalCoverage >= classCoverageThreshold -> INFO("✅")
+            totalCoverage in 1..classCoverageThreshold -> ERROR("💣")
+            else -> ERROR("🔥")
         }
     }
 
