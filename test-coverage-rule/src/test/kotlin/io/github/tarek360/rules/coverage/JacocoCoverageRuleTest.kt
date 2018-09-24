@@ -1,7 +1,9 @@
 package io.github.tarek360.rules.coverage
 
+import io.github.tarek360.core.bold
 import io.github.tarek360.rules.core.Issue
 import io.github.tarek360.rules.core.Level
+import io.github.tarek360.rules.coverage.JacocoCoverageRule.Companion.PROJECT_TOTAL_COVERAGE_TITLE
 import io.github.tarek360.rules.test.testRule
 import org.junit.Before
 import org.junit.Test
@@ -10,6 +12,11 @@ import java.io.File.separator
 class JacocoCoverageRuleTest {
 
     private lateinit var csvParser: CsvParser
+
+    private val expectedTotalCoverage = Issue(
+            msg = PROJECT_TOTAL_COVERAGE_TITLE.bold(),
+            level = Level.ERROR("💣"),
+            description = "56%".bold())
 
     @Before
     fun setup() {
@@ -24,7 +31,7 @@ class JacocoCoverageRuleTest {
                         ClassCoverage("com.android.game", "Presenter",
                                 "com/android/game/Presenter", 50),
                         ClassCoverage("com.android.game", "Presenter.InnerClass",
-                                "com/android/game/Presenter\$InnerClass", 30)
+                                "com/android/game/Presenter\$InnerClass", 0)
                 )
             }
         }
@@ -37,7 +44,6 @@ class JacocoCoverageRuleTest {
 
         val htmlFilePath = "https://tarek360.github.io/koshry/build/reports"
 
-
         val rule = JacocoCoverageRule(
                 classCoverageThreshold = 80,
                 csvFilePath = "build/reports/jacoco/jacoco.csv",
@@ -45,32 +51,29 @@ class JacocoCoverageRuleTest {
                 csvParser = csvParser
         )
 
-
         val expectedIssue1 = Issue(
-                msg = "**com/android/game/App**",
-                level = Level.INFO("🏆"),
+                msg = "com/android/game/App",
+                level = Level.INFO("✅"),
                 filePath = "$htmlFilePath${separator}com.android.game${separator}App.html",
-                description = "**95%**")
-
+                description = "95%")
 
         val expectedIssue2 = Issue(
-                msg = "**com/android/game/Activity**",
+                msg = "com/android/game/Activity",
                 level = Level.INFO("✅"),
                 filePath = "$htmlFilePath${separator}com.android.game${separator}Activity.html",
-                description = "**80%**")
-
+                description = "80%")
 
         val expectedIssue3 = Issue(
-                msg = "**com/android/game/Presenter**",
+                msg = "com/android/game/Presenter",
                 level = Level.ERROR("💣"),
                 filePath = "$htmlFilePath${separator}com.android.game${separator}Presenter.html",
-                description = "**50%**")
+                description = "50%")
 
         val expectedIssue4 = Issue(
-                msg = "**com/android/game/Presenter\$InnerClass**",
-                level = Level.ERROR("💣"),
+                msg = "com/android/game/Presenter\$InnerClass",
+                level = Level.ERROR("🔥"),
                 filePath = "$htmlFilePath${separator}com.android.game${separator}Presenter\$InnerClass.html",
-                description = "**30%**")
+                description = "0%")
 
 
         testRule(rule)
@@ -84,11 +87,12 @@ class JacocoCoverageRuleTest {
                 .apply()
 
                 // Assert
-                .assertHasIssue(expectedIssue = expectedIssue1)
-                .assertHasIssue(expectedIssue = expectedIssue2)
-                .assertHasIssue(expectedIssue = expectedIssue3)
-                .assertHasIssue(expectedIssue = expectedIssue4)
-                .assertIssuesCount(expectedCount = 4)
+                .assertFirstIssue(expectedIssue = expectedIssue1)
+                .assertSecondIssue(expectedIssue = expectedIssue2)
+                .assertThirdIssue(expectedIssue = expectedIssue3)
+                .assertHasIssueAt(expectedIssue = expectedIssue4, position = 3)
+                .assertLastIssue(expectedIssue = expectedTotalCoverage)
+                .assertIssuesCount(expectedCount = 5)
     }
 
     @Test
@@ -103,10 +107,11 @@ class JacocoCoverageRuleTest {
         )
 
         val expectedIssue = Issue(
-                msg = "**com/android/game/App**",
-                level = Level.INFO("🏆"),
+                msg = "com/android/game/App",
+                level = Level.INFO("✅"),
                 filePath = "com.android.game${separator}App.html",
-                description = "**95%**")
+                description = "95%")
+
 
         testRule(rule)
                 .withAddedFile(file = "src/main/java/com/android/game/App.java")
@@ -115,8 +120,9 @@ class JacocoCoverageRuleTest {
                 .apply()
 
                 // Assert
-                .assertHasIssue(expectedIssue = expectedIssue)
-                .assertIssuesCount(expectedCount = 1)
+                .assertFirstIssue(expectedIssue = expectedIssue)
+                .assertLastIssue(expectedIssue = expectedTotalCoverage)
+                .assertIssuesCount(expectedCount = 2)
     }
 
 
@@ -131,7 +137,6 @@ class JacocoCoverageRuleTest {
                 htmlFilePath = null
         )
 
-
         testRule(rule)
                 .withModifiedFile(file = "build.gradle")
                 .withDeletedFile(file = "src/main/kotlin/com/android/game/CustomView.kt")
@@ -140,6 +145,6 @@ class JacocoCoverageRuleTest {
                 .apply()
 
                 // Assert
-                .assertNoIssues()
+                .assertIssuesCount(expectedCount = 1) // only the total coverage
     }
 }
