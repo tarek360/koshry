@@ -1,3 +1,6 @@
+import io.github.tarek360.dependencies.Dependencies
+import io.github.tarek360.dependencies.MainApp
+import io.github.tarek360.dependencies.Projects
 import org.jetbrains.kotlin.config.KotlinCompilerVersion
 
 plugins {
@@ -15,14 +18,14 @@ repositories {
   mavenCentral()
 }
 
-group = "io.github.tarek360"
-version = "0.0.1"
+group = MainApp.group
+version = MainApp.version
 
 dependencies {
-  implementation(kotlin("stdlib-jdk8"))
-  implementation(project(":gitdiff-provider"))
-  testImplementation(project(":core"))
-  testImplementation("junit:junit:4.12")
+  implementation(kotlin(Dependencies.kotlinJDK))
+  implementation(project(Projects.gitDiffProvider))
+  testImplementation(project(Projects.core))
+  testImplementation(Dependencies.junit)
 }
 
 java {
