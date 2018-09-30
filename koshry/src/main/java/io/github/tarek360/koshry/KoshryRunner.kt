@@ -1,7 +1,6 @@
 package io.github.tarek360.koshry
 
 import io.github.tarek360.ci.Ci
-import io.github.tarek360.core.cl.CommanderImpl
 import io.github.tarek360.core.logger
 import io.github.tarek360.githost.Comment
 import io.github.tarek360.githost.GitHostInfo
@@ -16,37 +15,9 @@ import io.github.tarek360.koshry.utility.Md5Generator
 
 internal class KoshryRunner {
 
-    internal fun runOnCi(ci: Ci, koshryConfig: KoshryConfig) {
+    internal fun runOnCi(ci: Ci, koshryConfig: KoshryConfig, gitHostInfo: GitHostInfo, gitHostController: GitHostController) {
 
-        val token = ci.gitHostToken
-        val pullRequestId = ci.pullRequestId
-        val ownerNameRepoName = ci.projectOwnerNameRepoName
-
-        when {
-            pullRequestId == null -> {
-                logger.e { "Koshry: has stopped!, cant't find Pull Request ID in environment variables." }
-                return
-            }
-            ownerNameRepoName == null -> {
-                logger.e { "Koshry: has stopped!, cant't find owner name and/or repo name in environment variables." }
-                return
-            }
-            token == null -> {
-                logger.e { "Koshry: has stopped!, cant't 'KOSHRY_GIT_HOST_TOKEN' in environment variables." }
-                return
-            }
-        }
-
-        val gitHostInfo = GitHostInfo(
-                ownerNameRepoName = ownerNameRepoName,
-                pullRequestId = pullRequestId,
-                token = token)
-
-        val gitHostProvider = GitHostProvider(gitHostInfo, CommanderImpl())
-
-        val gitHostController = GitHostController(gitHostProvider)
-
-        val pullRequest = gitHostController.getPullRequestInfo()
+        val pullRequest = gitHostController.getPullRequest()
 
         val baseSha = pullRequest?.baseSha
         val headSha = pullRequest?.headSha
@@ -59,21 +30,13 @@ internal class KoshryRunner {
         koshryConfig.baseSha = baseSha
         koshryConfig.headSha = headSha
 
-        logger.d { "pullRequestId $pullRequestId" }
-        logger.d { "baseSha ${koshryConfig.baseSha}" }
-        logger.d { "headSha ${koshryConfig.headSha}" }
-
         val fileUrlGenerator: FileUrlGenerator = GithubFileUrlGenerator(gitHostInfo, Md5Generator())
 
         val comment = applyRules(ci, pullRequest, koshryConfig, fileUrlGenerator)
 
         val commentUrl = gitHostController.postComment(comment)
 
-        if (koshryConfig.headSha.isNotBlank()) {
-            gitHostController.postStatus(koshryConfig.headSha, comment.isFailed, commentUrl)
-        } else {
-            logger.e { "Koshry: Cant't post Pull Request Status" }
-        }
+        gitHostController.postStatus(koshryConfig.headSha, comment.isFailed, commentUrl)
     }
 
     internal fun runLocally(koshryConfig: KoshryConfig) {

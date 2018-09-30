@@ -44,7 +44,7 @@ class GitHostControllerTest {
 
 
         // Act
-        val actualPullRequest = gitHostController.getPullRequestInfo()
+        val actualPullRequest = gitHostController.getPullRequest()
 
         // Assert
         actualPullRequest mustEqualAndNotNull expectedPullRequest
