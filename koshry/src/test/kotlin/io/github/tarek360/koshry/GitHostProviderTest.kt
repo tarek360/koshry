@@ -1,33 +1,34 @@
 package io.github.tarek360.koshry
 
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.whenever
-import io.github.tarek360.core.cl.Commander
 import io.github.tarek360.core.mustInstanceOf
 import io.github.tarek360.githost.GitHostInfo
 import io.github.tarek360.githost.UnknownGitHost
 import io.github.tarek360.githost.github.GitHub
 import org.junit.Test
-
 import org.junit.runner.RunWith
-import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
 class GitHostProviderTest {
 
-    @Mock
-    private lateinit var commander: Commander
-
-    private val gitHostProvider: GitHostProvider by lazy {
-        GitHostProvider(GitHostInfo("", 0, ""), commander)
-    }
 
     @Test
     fun provideGitHub() {
         // Arrange
-        whenever(commander.executeCL(any())).thenReturn(listOf("git@github.com:tarek360/koshry.git"))
+        val gitHostProvider = GitHostProvider(GitHostInfo("github.com", "", 0, ""))
 
+        // Act
+        val gitHost = gitHostProvider.provide()
+
+        // Assert
+        gitHost mustInstanceOf GitHub::class.java
+    }
+
+
+    @Test
+    fun provideGitHubEnterprise() {
+        // Arrange
+        val gitHostProvider = GitHostProvider(GitHostInfo("github.company.com", "", 0, ""))
 
         // Act
         val gitHost = gitHostProvider.provide()
@@ -39,7 +40,7 @@ class GitHostProviderTest {
     @Test
     fun provideBitbucket() {
         // Arrange
-        whenever(commander.executeCL(any())).thenReturn(listOf("git@bitbucket.org:tarek360/koshry.git"))
+        val gitHostProvider = GitHostProvider(GitHostInfo("bitbucket.org", "", 0, ""))
 
 
         // Act
@@ -52,7 +53,7 @@ class GitHostProviderTest {
     @Test
     fun provideGitlab() {
         // Arrange
-        whenever(commander.executeCL(any())).thenReturn(listOf("git@gitlab.com:tarek360/koshry.git"))
+        val gitHostProvider = GitHostProvider(GitHostInfo("gitlab.com", "", 0, ""))
 
 
         // Act
@@ -65,7 +66,7 @@ class GitHostProviderTest {
     @Test
     fun provideUnknownGitHost() {
         // Arrange
-        whenever(commander.executeCL(any())).thenReturn(listOf("git@unknowgithost.com:tarek360/koshry.git"))
+        val gitHostProvider = GitHostProvider(GitHostInfo("unknowgithost.com", "", 0, ""))
 
 
         // Act
@@ -76,9 +77,9 @@ class GitHostProviderTest {
     }
 
     @Test
-    fun provideUnknownGitHost_emptyLineReturn() {
+    fun provideUnknownGitHost_emptyDomain() {
         // Arrange
-        whenever(commander.executeCL(any())).thenReturn(listOf(""))
+        val gitHostProvider = GitHostProvider(GitHostInfo("", "", 0, ""))
 
 
         // Act
@@ -88,16 +89,4 @@ class GitHostProviderTest {
         gitHost mustInstanceOf UnknownGitHost::class.java
     }
 
-    @Test
-    fun provideUnknownGitHost_emptyListReturn() {
-        // Arrange
-        whenever(commander.executeCL(any())).thenReturn(emptyList())
-
-
-        // Act
-        val gitHost = gitHostProvider.provide()
-
-        // Assert
-        gitHost mustInstanceOf UnknownGitHost::class.java
-    }
 }

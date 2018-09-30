@@ -1,6 +1,6 @@
 package io.github.tarek360.koshry
 
-import io.github.tarek360.githost.github.githubApiBaseUrl
+import io.github.tarek360.githost.github.baseUrl
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -26,7 +26,7 @@ class Backend {
 
     fun start() {
         server.start()
-        githubApiBaseUrl = server.url("/").toString()
+        baseUrl = server.url("/").toString()
     }
 
     fun shutdown() {

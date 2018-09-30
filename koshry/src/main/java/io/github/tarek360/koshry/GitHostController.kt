@@ -4,15 +4,15 @@ import io.github.tarek360.githost.Comment
 import io.github.tarek360.githost.GitHost
 import io.github.tarek360.githost.Status
 
-class GitHostController(gitHostProvider: GitHostProvider) {
+open class GitHostController(gitHostProvider: GitHostProvider) {
 
     private var gitHost: GitHost = gitHostProvider.provide()
 
-    fun getPullRequestInfo()= gitHost.getPullRequestInfo()
+    open fun getPullRequest()= gitHost.getPullRequestInfo()
 
-    fun postComment(comment: Comment): String? = gitHost.post(comment)
+    open fun postComment(comment: Comment): String? = gitHost.post(comment)
 
-    fun postStatus(sha: String, isFailed: Boolean, commentUrl: String?) {
+    open fun postStatus(sha: String, isFailed: Boolean, commentUrl: String?) {
 
         val statusType: Status.Type
         val description: String
