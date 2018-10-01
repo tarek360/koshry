@@ -4,7 +4,7 @@ import io.github.tarek360.githost.PullRequest
 import org.json.JSONException
 import org.json.JSONObject
 
-class PullRequestParser {
+class GithubPullRequestParser {
 
     companion object {
         const val KEY_HEAD = "head"
@@ -50,5 +50,4 @@ class PullRequestParser {
         }
         return PullRequest(headSha = headSha, baseSha = baseSha, author = author)
     }
-
 }

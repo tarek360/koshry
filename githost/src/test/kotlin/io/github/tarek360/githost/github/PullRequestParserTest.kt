@@ -10,7 +10,7 @@ class PullRequestParserTest{
     @Test
     fun parse() {
         // Arrange
-        val pullRequestParser = PullRequestParser()
+        val pullRequestParser = GithubPullRequestParser()
 
         val json = "{\n" +
                 "  \"user\": {\n" +
@@ -40,7 +40,7 @@ class PullRequestParserTest{
     fun parse_null_user_head_base() {
 
         // Arrange
-        val pullRequestParser = PullRequestParser()
+        val pullRequestParser = GithubPullRequestParser()
 
         val json = "{}"
 
@@ -59,7 +59,7 @@ class PullRequestParserTest{
     @Test
     fun parse_null_sha() {
         // Arrange
-        val pullRequestParser = PullRequestParser()
+        val pullRequestParser = GithubPullRequestParser()
 
         val json = "{\n" +
                 "  \"user\": {\n" +

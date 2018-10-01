@@ -31,7 +31,20 @@ class Gitlab(private val gitHostInfo: GitHostInfo) : GitHost {
     }
 
     override fun getPullRequestInfo(): PullRequest? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val url =
+            "$apiReposUrl/${gitHostInfo.ownerNameRepoName}/merge_requests/${gitHostInfo.pullRequestId}"
+
+        val request = Request.Builder()
+            .url(url)
+            .addHeader("PRIVATE-TOKEN", "${gitHostInfo.token}")
+            .get()
+            .build()
+
+        val response = okhttp.newCall(request).execute()
+
+        val json = response.body()?.string()
+
+        return GitlabPullRequestParser().parse(json)
     }
 
     private fun postPullRequestComment(comment: Comment): String? {

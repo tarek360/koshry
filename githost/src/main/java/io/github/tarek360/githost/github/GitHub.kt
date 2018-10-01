@@ -43,7 +43,7 @@ class GitHub(private val gitHostInfo: GitHostInfo) : GitHost {
 
     val json = response.body()?.string()
 
-    return PullRequestParser().parse(json)
+    return GithubPullRequestParser().parse(json)
   }
 
   private fun postPullRequestComment(comment: Comment): String? {
