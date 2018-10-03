@@ -8,7 +8,7 @@ abstract class Ci {
 
   abstract val buildId: Int?
 
-  abstract val projectOwnerNameRepoName: String?
+  abstract val projectId: String?
 
   abstract val pullRequestId: Int?
 }

@@ -20,14 +20,14 @@ internal class KoshryRunner {
 
         val token = ci.gitHostToken
         val pullRequestId = ci.pullRequestId
-        val ownerNameRepoName = ci.projectOwnerNameRepoName
+        val projectId = ci.projectId
 
         when {
             pullRequestId == null -> {
                 logger.e { "Koshry: has stopped!, cant't find Pull Request ID in environment variables." }
                 return
             }
-            ownerNameRepoName == null -> {
+            projectId == null -> {
                 logger.e { "Koshry: has stopped!, cant't find owner name and/or repo name in environment variables." }
                 return
             }
@@ -38,7 +38,7 @@ internal class KoshryRunner {
         }
 
         val gitHostInfo = GitHostInfo(
-                ownerNameRepoName = ownerNameRepoName,
+                projectId = projectId,
                 pullRequestId = pullRequestId,
                 token = token)
 

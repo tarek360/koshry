@@ -17,7 +17,7 @@ var githubApiBaseUrl: String = "https://api.github.com/"
 
 class GitHub(private val gitHostInfo: GitHostInfo) : GitHost {
 
-  private val apiReposUrl: String = "${githubApiBaseUrl}repos/${gitHostInfo.ownerNameRepoName}"
+  private val apiReposUrl: String = "${githubApiBaseUrl}repos/${gitHostInfo.projectId}"
   private val githubCommitCommander = GithubCommitCommander(CommanderImpl(), gitHostInfo)
 
   override fun post(comment: Comment): String? = postPullRequestComment(comment)

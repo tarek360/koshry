@@ -7,10 +7,11 @@ import io.github.tarek360.githost.UnknownGitHost
 import io.github.tarek360.githost.github.GitHub
 import io.github.tarek360.githost.gitlab.Gitlab
 
-open class GitHostProvider(private val gitHostInfo: GitHostInfo, private val commander: Commander) {
-
+open class GitHostProvider(
+    private val gitHostInfo: GitHostInfo,
+    private val commander: Commander
+) {
     open fun provide(): GitHost {
-
         val output = commander.executeCL("git config --get remote.origin.url")
 
         val gitHostType: GitHostType = if (output.isNotEmpty()) {
@@ -24,7 +25,6 @@ open class GitHostProvider(private val gitHostInfo: GitHostInfo, private val com
             GitHostType.GITLAB -> Gitlab(gitHostInfo)
             else -> UnknownGitHost()
         }
-
     }
 
     private fun getGitHostType(url: String): GitHostType {
@@ -44,5 +44,4 @@ open class GitHostProvider(private val gitHostInfo: GitHostInfo, private val com
         BITBUCKET,
         GITLAB
     }
-
 }

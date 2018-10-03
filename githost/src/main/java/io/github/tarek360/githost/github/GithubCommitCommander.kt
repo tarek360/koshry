@@ -25,7 +25,7 @@ class GithubCommitCommander(private val commander: Commander, private val gitHos
 
   private fun gitPush(branchName: String) {
     commander.executeCL(
-        "git remote add origin-pages https://${gitHostInfo.token}@github.com/${gitHostInfo.ownerNameRepoName}.git > /dev/null 2>&1")
+        "git remote add origin-pages https://${gitHostInfo.token}@github.com/${gitHostInfo.projectId}.git > /dev/null 2>&1")
     commander.executeCL("git push --quiet --set-upstream origin-pages $branchName")
   }
 

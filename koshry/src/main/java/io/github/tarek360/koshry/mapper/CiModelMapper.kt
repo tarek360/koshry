@@ -8,7 +8,7 @@ class CiModelMapper {
         return if (ci != null)
             Ci(ci.gitHostToken,
                     ci.buildId,
-                    ci.projectOwnerNameRepoName,
+                    ci.projectId,
                     ci.pullRequestId)
         else
             null

@@ -10,7 +10,6 @@ import org.junit.Before
 import org.junit.AfterClass
 import org.junit.BeforeClass
 
-
 @RunWith(MockitoJUnitRunner::class)
 class KoshryRunnerTest {
 
@@ -57,7 +56,7 @@ class KoshryRunnerTest {
     @Test
     fun runOnCi() {
         whenever(ci.pullRequestId).thenReturn(1)
-        whenever(ci.projectOwnerNameRepoName).thenReturn("tarek360/RichPath")
+        whenever(ci.projectId).thenReturn("tarek360/RichPath")
         whenever(ci.gitHostToken).thenReturn("abcdef123")
         koshryRunner.runOnCi(ci, koshryConfig)
     }
@@ -65,7 +64,7 @@ class KoshryRunnerTest {
     @Test
     fun runOnCi_nullPullRequestResponse() {
         whenever(ci.pullRequestId).thenReturn(1)
-        whenever(ci.projectOwnerNameRepoName).thenReturn("tarek360/RichPath")
+        whenever(ci.projectId).thenReturn("tarek360/RichPath")
         whenever(ci.gitHostToken).thenReturn("abcdef123")
 
         Backend().pullRequestResponseNull = true
@@ -76,7 +75,7 @@ class KoshryRunnerTest {
     @Test
     fun runOnCi_nullPullRequestPostCommentResponse() {
         whenever(ci.pullRequestId).thenReturn(1)
-        whenever(ci.projectOwnerNameRepoName).thenReturn("tarek360/RichPath")
+        whenever(ci.projectId).thenReturn("tarek360/RichPath")
         whenever(ci.gitHostToken).thenReturn("abcdef123")
 
         Backend().pullRequestCommentResponseNull = true
@@ -91,18 +90,17 @@ class KoshryRunnerTest {
     }
 
     @Test
-    fun `runOnCi with null projectOwnerNameRepoName`() {
+    fun `runOnCi with null project Id`() {
         whenever(ci.pullRequestId).thenReturn(12)
-        whenever(ci.projectOwnerNameRepoName).thenReturn(null)
+        whenever(ci.projectId).thenReturn(null)
         koshryRunner.runOnCi(ci, koshryConfig)
     }
 
     @Test
     fun `runOnCi with null gitHostToken`() {
         whenever(ci.pullRequestId).thenReturn(12)
-        whenever(ci.projectOwnerNameRepoName).thenReturn("tarek360/RichPath")
+        whenever(ci.projectId).thenReturn("tarek360/RichPath")
         whenever(ci.gitHostToken).thenReturn(null)
         koshryRunner.runOnCi(ci, koshryConfig)
     }
-
 }

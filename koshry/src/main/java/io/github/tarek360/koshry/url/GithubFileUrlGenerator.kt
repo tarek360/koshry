@@ -8,18 +8,18 @@ class GithubFileUrlGenerator(
     private val md5Generator: Md5Generator
 ) : FileUrlGenerator {
 
-  override fun generate(filePath: String, lineNumber: Int?): String {
+    override fun generate(filePath: String, lineNumber: Int?): String {
 
-    val line = if (lineNumber != null) {
-      "R$lineNumber"
-    } else {
-      ""
+        val line = if (lineNumber != null) {
+            "R$lineNumber"
+        } else {
+            ""
+        }
+
+        val projectId = gitHostInfo.projectId
+        val pullRequestId = gitHostInfo.pullRequestId
+        val filePathMd5 = md5Generator.getMd5(filePath)
+
+        return "https://github.com/$projectId/pull/$pullRequestId/files#diff-$filePathMd5$line"
     }
-
-    val ownerNameRepoName = gitHostInfo.ownerNameRepoName
-    val pullRequestId = gitHostInfo.pullRequestId
-    val filePathMd5 = md5Generator.getMd5(filePath)
-
-    return "https://github.com/$ownerNameRepoName/pull/$pullRequestId/files#diff-$filePathMd5$line"
-  }
 }

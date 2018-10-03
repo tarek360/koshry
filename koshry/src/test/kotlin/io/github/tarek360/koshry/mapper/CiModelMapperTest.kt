@@ -16,7 +16,7 @@ class CiModelMapperTest {
         val ci = mock(io.github.tarek360.ci.Ci::class.java)
         whenever(ci.gitHostToken).thenReturn("gitHostToken")
         whenever(ci.buildId).thenReturn(17)
-        whenever(ci.projectOwnerNameRepoName).thenReturn("projectOwnerNameRepoName")
+        whenever(ci.projectId).thenReturn("projectId")
         whenever(ci.pullRequestId).thenReturn(3)
 
         // Act
@@ -27,7 +27,7 @@ class CiModelMapperTest {
         result?.run {
             gitHostToken mustEqualAndNotNull "gitHostToken"
             buildId mustEqualAndNotNull 17
-            projectOwnerNameRepoName mustEqualAndNotNull "projectOwnerNameRepoName"
+            projectId mustEqualAndNotNull "projectId"
             pullRequestId mustEqualAndNotNull 3
         }
     }

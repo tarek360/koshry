@@ -22,7 +22,7 @@ class Gitlab(private val gitHostInfo: GitHostInfo) : GitHost {
     }
 
     private val apiReposUrl: String =
-        "${GITLAB_API_BASE_URL}projects/${gitHostInfo.ownerNameRepoName}"
+        "${GITLAB_API_BASE_URL}projects/${gitHostInfo.projectId}"
 
     override fun post(comment: Comment) = postPullRequestComment(comment)
 
@@ -36,7 +36,7 @@ class Gitlab(private val gitHostInfo: GitHostInfo) : GitHost {
 
     override fun getPullRequestInfo(): PullRequest? {
         val url =
-            "$apiReposUrl/${gitHostInfo.ownerNameRepoName}/merge_requests/${gitHostInfo.pullRequestId}"
+            "$apiReposUrl/${gitHostInfo.projectId}/merge_requests/${gitHostInfo.pullRequestId}"
 
         val request = Request.Builder()
             .url(url)
@@ -53,7 +53,7 @@ class Gitlab(private val gitHostInfo: GitHostInfo) : GitHost {
 
     private fun postPullRequestComment(comment: Comment): String? {
         val url =
-            "$apiReposUrl/${gitHostInfo.ownerNameRepoName}/issues/${gitHostInfo.pullRequestId}/notes"
+            "$apiReposUrl/${gitHostInfo.projectId}/issues/${gitHostInfo.pullRequestId}/notes"
 
         val bodyJson = JSONObject()
         bodyJson.put("body", comment.msg)
@@ -78,7 +78,7 @@ class Gitlab(private val gitHostInfo: GitHostInfo) : GitHost {
     }
 
     private fun postCommitStatus(status: Status) {
-        val url = "$apiReposUrl/${gitHostInfo.ownerNameRepoName}/statuses/${status.sha}"
+        val url = "$apiReposUrl/${gitHostInfo.projectId}/statuses/${status.sha}"
 
         val bodyJson = JSONObject()
         bodyJson.put("context", status.context)
