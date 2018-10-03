@@ -17,6 +17,10 @@ class Gitlab(private val gitHostInfo: GitHostInfo) : GitHost {
         private const val GITLAB_API_BASE_URL = "https://gitlab.com/api/v4/"
     }
 
+    private val commitCommander by lazy {
+        GitlabCommitCommander()
+    }
+
     private val apiReposUrl: String =
         "${GITLAB_API_BASE_URL}projects/${gitHostInfo.ownerNameRepoName}"
 
@@ -27,7 +31,7 @@ class Gitlab(private val gitHostInfo: GitHostInfo) : GitHost {
     }
 
     override fun pushFile(filePath: String, branchName: String, commitMsg: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        commitCommander.commit(filePath = filePath, branchName = branchName, commitMsg = commitMsg)
     }
 
     override fun getPullRequestInfo(): PullRequest? {

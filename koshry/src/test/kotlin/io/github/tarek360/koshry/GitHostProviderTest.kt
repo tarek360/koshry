@@ -7,6 +7,7 @@ import io.github.tarek360.core.mustInstanceOf
 import io.github.tarek360.githost.GitHostInfo
 import io.github.tarek360.githost.UnknownGitHost
 import io.github.tarek360.githost.github.GitHub
+import io.github.tarek360.githost.gitlab.Gitlab
 import org.junit.Test
 
 import org.junit.runner.RunWith
@@ -59,7 +60,7 @@ class GitHostProviderTest {
         val gitHost = gitHostProvider.provide()
 
         // Assert
-        gitHost mustInstanceOf UnknownGitHost::class.java
+        gitHost mustInstanceOf Gitlab::class.java
     }
 
     @Test
