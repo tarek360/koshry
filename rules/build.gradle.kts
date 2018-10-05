@@ -1,6 +1,6 @@
 import io.github.tarek360.dependencies.Dependencies
-import io.github.tarek360.dependencies.MainApp
-import io.github.tarek360.dependencies.Projects
+import io.github.tarek360.dependencies.Project
+import io.github.tarek360.dependencies.Modules
 
 //import org.jetbrains.kotlin.config.KotlinCompilerVersion
 
@@ -19,15 +19,15 @@ repositories {
   mavenCentral()
 }
 
-group = MainApp.group
-version = MainApp.version
+group = Project.group
+version = Project.version
 
 dependencies {
   implementation(kotlin(Dependencies.kotlinJDK))
-  api(project(Projects.gitDiffParser))
-  api(project(Projects.core))
-  api(project(Projects.rulesCore))
-  api(project(Projects.rulesTest))
+  api(project(Modules.gitDiffParser))
+  api(project(Modules.core))
+  api(project(Modules.rulesCore))
+  api(project(Modules.rulesTest))
   testImplementation(Dependencies.junit)
 }
 

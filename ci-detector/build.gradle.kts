@@ -1,5 +1,5 @@
 import io.github.tarek360.dependencies.Dependencies
-import io.github.tarek360.dependencies.MainApp
+import io.github.tarek360.dependencies.Project
 import org.jetbrains.kotlin.config.KotlinCompilerVersion
 
 plugins {
@@ -17,8 +17,8 @@ repositories {
   mavenCentral()
 }
 
-group = MainApp.group
-version = MainApp.version
+group = Project.group
+version = Project.version
 
 dependencies {
   implementation(kotlin(Dependencies.kotlinJDK))

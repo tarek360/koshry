@@ -1,5 +1,5 @@
 import io.github.tarek360.dependencies.Dependencies
-import io.github.tarek360.dependencies.Projects
+import io.github.tarek360.dependencies.Modules
 import io.github.tarek360.dependencies.MainClasses
 import org.jetbrains.kotlin.config.KotlinCompilerVersion
 
@@ -14,9 +14,9 @@ application {
 
 dependencies {
   implementation(kotlin(Dependencies.kotlinJDK))
-  implementation(project(Projects.koshry))
-  implementation(project(Projects.rules))
-  implementation(project(Projects.testCoverageRule))
+  implementation(project(Modules.koshry))
+  implementation(project(Modules.rules))
+  implementation(project(Modules.testCoverageRule))
 }
 
 java {

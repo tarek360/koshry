@@ -1,6 +1,6 @@
 package io.github.tarek360.dependencies
 
-object Projects {
+object Modules {
 
     val ciDetector              = ":ci-detector"
 
