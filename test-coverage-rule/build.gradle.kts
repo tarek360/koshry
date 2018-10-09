@@ -1,3 +1,6 @@
+import io.github.tarek360.dependencies.Dependencies
+import io.github.tarek360.dependencies.Project
+import io.github.tarek360.dependencies.Modules
 import org.jetbrains.kotlin.config.KotlinCompilerVersion
 
 plugins {
@@ -15,14 +18,14 @@ repositories {
   mavenCentral()
 }
 
-group = "io.github.tarek360.koshry.rules"
-version = "0.0.1"
+group = Project.group
+version = Project.version
 
 dependencies {
-  implementation(kotlin("stdlib-jdk8"))
-  implementation(project(":rules"))
-  testImplementation(project(":rules-test"))
-  testImplementation("junit:junit:4.12")
+  implementation(kotlin(Dependencies.kotlinJDK))
+  implementation(project(Modules.rules))
+  testImplementation(project(Modules.rulesTest))
+  testImplementation(Dependencies.junit)
 }
 
 java {

@@ -1,3 +1,6 @@
+import io.github.tarek360.dependencies.Dependencies
+import io.github.tarek360.dependencies.Project
+import io.github.tarek360.dependencies.Modules
 import org.jetbrains.kotlin.config.KotlinCompilerVersion
 
 plugins {
@@ -15,20 +18,20 @@ repositories {
   mavenCentral()
 }
 
-group = "io.github.tarek360"
-version = "0.0.1"
+group = Project.group
+version = Project.version
 
 dependencies {
-  implementation(kotlin("stdlib-jdk8"))
-  implementation(project(":core"))
-  implementation(project(":rules"))
-  implementation(project(":gitdiff-parser"))
-  implementation(project(":githost"))
-  implementation(project(":ci-detector"))
-  testImplementation("junit:junit:4.12")
-  testImplementation("org.mockito:mockito-core:2.22.0")
-  testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0-RC1")
-  testImplementation("com.squareup.okhttp3:mockwebserver:3.11.0")
+  implementation(kotlin(Dependencies.kotlinJDK))
+  implementation(project(Modules.core))
+  implementation(project(Modules.rules))
+  implementation(project(Modules.gitDiffParser))
+  implementation(project(Modules.gitHost))
+  implementation(project(Modules.ciDetector))
+  testImplementation(Dependencies.junit)
+  testImplementation(Dependencies.mockitoCore)
+  testImplementation(Dependencies.mockitoKotlin)
+  testImplementation(Dependencies.okHttp3Mock)
 }
 
 java {

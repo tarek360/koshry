@@ -1,3 +1,5 @@
+import io.github.tarek360.dependencies.Dependencies
+import io.github.tarek360.dependencies.Project
 import org.jetbrains.kotlin.config.KotlinCompilerVersion
 
 plugins {
@@ -15,13 +17,11 @@ repositories {
   mavenCentral()
 }
 
-group = "io.github.tarek360"
-version = "0.0.1"
-
-val okHttpVersion = "3.8.1"
+group = Project.group
+version = Project.version
 
 dependencies {
-  implementation(kotlin("stdlib-jdk8"))
+  implementation(kotlin(Dependencies.kotlinJDK))
 }
 
 java {
