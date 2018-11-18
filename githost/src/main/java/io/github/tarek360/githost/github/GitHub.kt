@@ -1,15 +1,12 @@
 package io.github.tarek360.githost.github
 
 import io.github.tarek360.core.cl.CommanderImpl
-import io.github.tarek360.githost.Comment
-import io.github.tarek360.githost.GitHost
-import io.github.tarek360.githost.GitHostInfo
-import io.github.tarek360.githost.PullRequest
-import io.github.tarek360.githost.Status
+import io.github.tarek360.githost.*
 import io.github.tarek360.githost.network.okhttp
 import okhttp3.MediaType
 import okhttp3.Request
 import okhttp3.RequestBody
+import org.json.JSONArray
 import org.json.JSONObject
 import java.net.HttpURLConnection.HTTP_CREATED
 
@@ -31,9 +28,11 @@ class GitHub(private val gitHostInfo: GitHostInfo, isEnterprise: Boolean = false
     private val apiReposUrl: String = "${baseUrl}repos/${gitHostInfo.ownerNameRepoName}"
     private val githubCommitCommander = GithubCommitCommander(CommanderImpl(), gitHostInfo)
 
-    override fun post(comment: Comment): String? = postPullRequestComment(comment)
+    override fun postComment(comment: Comment): String? = postPullRequestComment(comment)
 
-    override fun post(status: Status) {
+    override fun updateComment(comment: Comment, commentId: Int): String? = updatePullRequestComment(comment, commentId)
+
+    override fun postStatus(status: Status) {
         postCommitStatus(status)
     }
 
@@ -57,6 +56,27 @@ class GitHub(private val gitHostInfo: GitHostInfo, isEnterprise: Boolean = false
         return PullRequestParser().parse(json)
     }
 
+    override fun getPullRequestComments(): List<GitHostComment>? {
+        val url = "$apiReposUrl/issues/${gitHostInfo.pullRequestId}/comments"
+
+        val request = Request.Builder()
+                .url(url)
+                .addHeader("Authorization", "token ${gitHostInfo.token}")
+                .get()
+                .build()
+
+        val response = okhttp.newCall(request).execute()
+
+        val json = response.body()?.string()
+
+        val jsonArray = JSONArray(json)
+
+        return jsonArray.map {
+            val jsonObject = it as JSONObject
+            GitHostComment(jsonObject.getInt("id"), jsonObject.getString("body"))
+        }
+    }
+
     private fun postPullRequestComment(comment: Comment): String? {
 
         val url = "$apiReposUrl/issues/${gitHostInfo.pullRequestId}/comments"
@@ -70,6 +90,32 @@ class GitHub(private val gitHostInfo: GitHostInfo, isEnterprise: Boolean = false
                 .url(url)
                 .addHeader("Authorization", "token ${gitHostInfo.token}")
                 .post(body)
+                .build()
+
+        val response = okhttp.newCall(request).execute()
+
+        val jsonResponse = JSONObject(response.body()?.string())
+
+        return if (response.code() == HTTP_CREATED) {
+            jsonResponse.getString("html_url")
+        } else {
+            null
+        }
+    }
+
+    private fun updatePullRequestComment(comment: Comment, commentId: Int): String? {
+
+        val url = "$apiReposUrl/issues/comments/$commentId"
+
+        val bodyJson = JSONObject()
+        bodyJson.put("body", comment.msg)
+
+        val body = RequestBody.create(MediaType.parse("application/json"), bodyJson.toString())
+
+        val request = Request.Builder()
+                .url(url)
+                .addHeader("Authorization", "token ${gitHostInfo.token}")
+                .patch(body)
                 .build()
 
         val response = okhttp.newCall(request).execute()
