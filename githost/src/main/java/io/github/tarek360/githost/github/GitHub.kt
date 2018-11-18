@@ -72,8 +72,8 @@ class GitHub(private val gitHostInfo: GitHostInfo, isEnterprise: Boolean = false
         val jsonArray = JSONArray(json)
 
         return jsonArray.map {
-            val commentJSON = JSONObject(it)
-            GitHostComment(commentJSON.getInt("id"), commentJSON.getString("body"))
+            val jsonObject = it as JSONObject
+            GitHostComment(jsonObject.getInt("id"), jsonObject.getString("body"))
         }
     }
 
