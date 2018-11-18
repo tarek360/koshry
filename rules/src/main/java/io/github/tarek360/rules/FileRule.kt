@@ -1,24 +1,21 @@
 package io.github.tarek360.rules
 
-import io.github.tarek360.gitdiff.GitDiff
 import io.github.tarek360.gitdiff.GitFile
 import io.github.tarek360.rules.FileRule.FileRuleBuilder
+import io.github.tarek360.rules.core.*
 import io.github.tarek360.rules.model.File
-import io.github.tarek360.rules.report.Issue
-import io.github.tarek360.rules.report.Level
-import io.github.tarek360.rules.report.Level.INFO
-import io.github.tarek360.rules.report.Report
+import io.github.tarek360.rules.core.Level.INFO
 
 class FileRule private constructor(
         var condition: (File) -> Boolean,
         private var reportTitle: String,
         private var issueLevel: Level
-) : Rule {
+) : Rule() {
 
     private lateinit var report: Report
 
-    override fun apply(gitDiff: GitDiff): Report? {
-        report = Report(reportTitle, arrayListOf())
+    override fun run(): Report? {
+        report = Report(msgTitle = reportTitle)
         applyToFiles(gitDiff.getAddedFiles())
         applyToFiles(gitDiff.getModifiedFiles())
         return report.takeIf {
@@ -39,7 +36,7 @@ class FileRule private constructor(
     class FileRuleBuilder {
         lateinit var condition: (File) -> Boolean // Required
         var reportTitle = "File Rule" // Optional
-        var issueLevel: Level = INFO // Optional
+        var issueLevel: Level = INFO() // Optional
 
         fun build(): FileRule = FileRule(condition, reportTitle, issueLevel)
     }

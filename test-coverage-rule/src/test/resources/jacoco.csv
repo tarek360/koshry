@@ -1,0 +1,13 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Koshry,io.github.tarek360.magic,Lines,0,21,5,5,0,1,0,3,0,3
+Koshry,io.github.tarek360.gitdiff,GitFileImpl,65,0,20,80,7,0,4,0,4,0
+Koshry,io.github.tarek360.gitdiff,Parser.StartCount,0,15,0,0,0,1,0,3,0,3
+Koshry,io.github.tarek360.gitdiff,Controller,0,15,10,0,0,1,0,3,0,3
+Koshry,io.github.tarek360.gitdiff,GitFileImpl.deletedLines.new Function0() {...},5,0,0,0,1,0,1,0,1,0
+Koshry,io.github.tarek360.gitdiff,GitDiffImpl.buildDiffCommandFilesNameOnly.1.new Function1() {...},8,0,0,0,2,0,1,0,1,0
+Koshry,io.github.tarek360.gitdiff,GitFileImpl.lines.new Function0() {...},8,0,0,0,1,0,1,0,1,0
+Koshry,io.github.tarek360.gitdiff,GitDiff.Companion,24,0,0,0,3,0,2,0,2,0
+Koshry,io.github.tarek360.gitdiff,GitFileImpl.diffCommand.2.1.new Function1() {...},8,0,0,0,2,0,1,0,1,0
+Koshry,io.github.tarek360.gitdiff,GitDiffImpl,128,0,2,0,24,0,7,0,6,0
+Koshry,io.github.tarek360.gitdiff,GitFileImpl.diffCommand.new Function0() {...},7,0,0,0,2,0,1,0,1,0
+Koshry,io.github.tarek360.gitdiff,GitFileImpl.diffCommand.2.new Function1() {...},24,0,0,0,4,0,1,0,1,0

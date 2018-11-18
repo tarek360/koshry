@@ -3,139 +3,29 @@ package io.github.tarek360.koshry
 import io.github.tarek360.ci.Ci
 import io.github.tarek360.core.cl.CommanderImpl
 import io.github.tarek360.core.logger
-import io.github.tarek360.gitdiff.GitDiff
-import io.github.tarek360.githost.Comment
-import io.github.tarek360.githost.GitHost
-import io.github.tarek360.githost.GitHostInfo
-import io.github.tarek360.githost.Status
-import io.github.tarek360.githost.Status.Type
-import io.github.tarek360.koshry.ReportsAggregator.Companion.KOSHRY_REPORT_TITLE
-import io.github.tarek360.koshry.io.FileWriter
-import io.github.tarek360.koshry.url.FileUrlGenerator
-import io.github.tarek360.koshry.url.GithubFileUrlGenerator
-import io.github.tarek360.koshry.url.LocalFileUrlGenerator
-import io.github.tarek360.koshry.utility.Md5Generator
-import io.github.tarek360.rules.report.Issue
-import io.github.tarek360.rules.report.Level.ERROR
+import io.github.tarek360.koshry.git.GitHostInfoProvider
+import io.github.tarek360.koshry.git.GitRemoteUrlParser
 
 class Koshry {
+    companion object {
+        fun run(koshryConfig: KoshryConfig) {
+            val ci: Ci? = CiProvider().provide()
+            val runner = KoshryRunner()
+            if (ci != null) {
+                logger.i { "${ci.javaClass.simpleName} is detected!" }
+                logger.i { "Koshry started running on ${ci.javaClass.simpleName}.." }
 
-  companion object {
-    fun run(koshryConfig: KoshryConfig) {
+                val gitHostInfo = GitHostInfoProvider(ci, CommanderImpl(), GitRemoteUrlParser()).provide()
 
-      val ci = CiProvider().provide()
+                val gitHostProvider = GitHostProvider(gitHostInfo)
 
-      if (ci != null) {
-        logger.i { "Koshry started running on CI.." }
-        logger.i { "${ci.javaClass.simpleName} is detected!" }
-        runOnCi(ci, koshryConfig)
-      } else {
-        logger.i { "Koshry started running locally.." }
-        runLocally(koshryConfig)
-      }
-    }
+                val gitHostController = GitHostController(gitHostProvider)
 
-    private fun runOnCi(ci: Ci, koshryConfig: KoshryConfig) {
-
-      val token = ci.gitHostToken
-      val pullRequestId = ci.pullRequestId
-      val ownerNameRepoName = ci.projectOwnerNameRepoName
-
-      val gitHostInfo = GitHostInfo(
-              ownerNameRepoName = ownerNameRepoName,
-              pullRequestId = pullRequestId,
-              token = token)
-
-      val gitHostProvider = GitHostProvider(gitHostInfo, CommanderImpl())
-
-      val gitHost: GitHost? = gitHostProvider.provide()
-
-      val pullRequest = gitHost?.getPullRequestInfo()
-
-      val baseSha = pullRequest?.baseSha
-      val headSha = pullRequest?.headSha
-
-      logger.d { "pullRequestId $pullRequestId" }
-      logger.d { "baseSha $baseSha" }
-      logger.d { "headSha $headSha" }
-
-      if (baseSha != null && headSha != null) {
-
-        val fileUrlGenerator: FileUrlGenerator = GithubFileUrlGenerator(gitHostInfo, Md5Generator())
-
-        val comment = applyRules(baseSha, headSha, koshryConfig, fileUrlGenerator)
-        val commentUrl = gitHost.post(comment)
-
-        val statusType: Type
-        val description: String
-        if (comment.isFailed) {
-          statusType = Type.FAILURE
-          description = "Failed, Check the report"
-        } else {
-          statusType = Type.SUCCESS
-          description = "Passed"
+                runner.runOnCi(ci, koshryConfig, gitHostInfo, gitHostController)
+            } else {
+                logger.i { "Koshry started running locally.." }
+                runner.runLocally(koshryConfig)
+            }
         }
-
-        gitHost.post(Status(
-                context = "Koshry",
-                type = statusType,
-                sha = headSha,
-                description = description,
-                targetUrl = commentUrl
-        ))
-
-      } else {
-        logger.e { "Something went wrong!" }
-        gitHost?.post(Comment("$KOSHRY_REPORT_TITLE Something went wrong!", true))
-
-      }
     }
-
-    private fun runLocally(koshryConfig: KoshryConfig) {
-
-      val fileUrlGenerator: FileUrlGenerator = LocalFileUrlGenerator()
-
-//      val baseSha = "3974ee3ae75d42ea9786486f9885ebb6e2d27ee6"
-//      val headSha = "2739ec582e38c4a8b277acc68bab5b23ffca46a7"
-
-      val baseSha = "395264c9f53bc03847003a842c232139774d4270"
-      val headSha = "b6c227c30ed378f540deed0d62faa61eedb2d0f0"
-
-      val comment = applyRules(baseSha, headSha, koshryConfig, fileUrlGenerator)
-
-      val reportFilePath = "build/reports/koshry.md"
-      FileWriter().writeToFile(reportFilePath, comment.msg)
-    }
-
-    private fun applyRules(baseSha: String, headSha: String, koshryConfig: KoshryConfig,
-                           fileUrlGenerator: FileUrlGenerator): Comment {
-
-      var shouldFail = false
-      val gitDiff = GitDiff.create(baseSha, headSha)
-
-      val reports = koshryConfig.rules.mapNotNull { rule ->
-        val report = rule.apply(gitDiff)
-        if (!shouldFail) {
-          report?.let {
-            shouldFail = hasFailedIssue(report.issues)
-          }
-        }
-        report
-      }
-      val reportsAggregator = ReportsAggregator(fileUrlGenerator)
-      val markDownComment = reportsAggregator.aggregate(reports)
-      return Comment(markDownComment, shouldFail)
-    }
-
-
-    private fun hasFailedIssue(issues: MutableList<Issue>): Boolean {
-      for (issue in issues) {
-        if (issue.level == ERROR) {
-          return true
-        }
-      }
-      return false
-    }
-  }
-
 }

@@ -1,8 +1,8 @@
 package io.github.tarek360.rules
 
 import io.github.tarek360.gitdiff.Line
-import io.github.tarek360.rules.report.Issue
-import io.github.tarek360.rules.report.Level
+import io.github.tarek360.rules.core.Issue
+import io.github.tarek360.rules.core.Level
 import io.github.tarek360.rules.test.testRule
 import org.junit.Test
 
@@ -18,7 +18,7 @@ class LineRuleTest {
                         && line.text.contains("make a crash")
             }
             reportTitle = "Don't create bugs."
-            issueLevel = Level.ERROR
+            issueLevel = Level.ERROR()
         }
 
         val linesWithIssue = listOf(
@@ -33,13 +33,13 @@ class LineRuleTest {
 
         val expectedIssue1 = Issue(
                 msg = "Line --> **3** , File --> **core/network/Call.java**",
-                level = Level.ERROR,
+                level = Level.ERROR(),
                 filePath = "core/network/Call.java",
                 lineNumber = 3)
 
         val expectedIssue2 = Issue(
                 msg = "Line --> **3** , File --> **core/network/http/Request.java**",
-                level = Level.ERROR,
+                level = Level.ERROR(),
                 filePath = "core/network/http/Request.java",
                 lineNumber = 3)
 
@@ -54,8 +54,8 @@ class LineRuleTest {
                 .apply()
 
                 // Assert
-                .shouldHasIssue(expectedIssue = expectedIssue1)
-                .shouldHasIssue(expectedIssue = expectedIssue2)
-                .shouldHasIssuesCount(expectedCount = 2)
+                .assertHasIssue(expectedIssue = expectedIssue1)
+                .assertHasIssue(expectedIssue = expectedIssue2)
+                .assertIssuesCount(expectedCount = 2)
     }
 }

@@ -1,5 +1,5 @@
 package io.github.tarek360.koshry
 
-import io.github.tarek360.rules.Rule
+import io.github.tarek360.rules.core.Rule
 
-data class KoshryConfig(val rules: ArrayList<Rule> = ArrayList())
+data class KoshryConfig(val rules: List<Rule> = ArrayList(), var baseSha: String, var headSha: String)

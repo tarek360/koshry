@@ -1,1 +1,1 @@
-include ':core', 'gitdiff-provider', ':gitdiff-parser', 'githost', 'rules', 'koshry', 'ci-detector', 'app'
+include ':core', 'gitdiff-provider', ':gitdiff-parser', 'githost', 'rules', 'rules-core', 'rules-test', 'koshry', 'ci-detector', 'app', 'test-coverage-rule'

@@ -1,12 +1,17 @@
-import org.jetbrains.kotlin.config.KotlinCompilerVersion
+import io.github.tarek360.dependencies.Dependencies
+import io.github.tarek360.dependencies.Project
+import io.github.tarek360.dependencies.Modules
+
+//import org.jetbrains.kotlin.config.KotlinCompilerVersion
 
 plugins {
   kotlin("jvm")
   id("java-library")
   id("maven-publish")
+  jacoco
 }
 
-apply { from("../mvn-push.gradle") }
+apply { from("../push.gradle") }
 
 repositories {
   mavenLocal()
@@ -14,16 +19,16 @@ repositories {
   mavenCentral()
 }
 
-group = "io.github.tarek360"
-version = "0.0.1"
+group = Project.group
+version = Project.version
 
 dependencies {
-  implementation(kotlin("stdlib-jdk8"))
-  implementation(project(":gitdiff-parser"))
-  testImplementation(project(":core"))
-  testImplementation("com.squareup.okhttp3:okhttp:3.8.1")
-  testImplementation("junit:junit:4.12")
-  testImplementation("org.mockito:mockito-core:2+")
+  implementation(kotlin(Dependencies.kotlinJDK))
+  api(project(Modules.gitDiffParser))
+  api(project(Modules.core))
+  api(project(Modules.rulesCore))
+  api(project(Modules.rulesTest))
+  testImplementation(Dependencies.junit)
 }
 
 java {

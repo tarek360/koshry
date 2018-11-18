@@ -1,3 +1,6 @@
+import io.github.tarek360.dependencies.Dependencies
+import io.github.tarek360.dependencies.Modules
+import io.github.tarek360.dependencies.MainClasses
 import org.jetbrains.kotlin.config.KotlinCompilerVersion
 
 plugins {
@@ -6,13 +9,14 @@ plugins {
 }
 
 application {
-  mainClassName = "io.github.tarek360.app.AppKt"
+  mainClassName = MainClasses.appKit
 }
 
 dependencies {
-  implementation(kotlin("stdlib-jdk8"))
-  implementation(project(":koshry"))
-  implementation(project(":rules"))
+  implementation(kotlin(Dependencies.kotlinJDK))
+  implementation(project(Modules.koshry))
+  implementation(project(Modules.rules))
+  implementation(project(Modules.testCoverageRule))
 }
 
 java {

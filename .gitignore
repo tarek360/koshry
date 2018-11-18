@@ -157,10 +157,6 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
-### AndroidStudio Patch ###
-
-!/gradle/wrapper/gradle-wrapper.jar
-
 ### Firebase ###
 .idea
 **/node_modules/*
@@ -302,6 +298,3 @@ $RECYCLE.BIN/
 
 ### Firebase Google Services file ###
 google-services.json
-
-# git_diff
-.git_diff

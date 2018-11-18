@@ -2,9 +2,9 @@ package io.github.tarek360.koshry.utility
 
 import java.security.MessageDigest
 
-class Md5Generator {
+open class Md5Generator {
 
-  fun getMd5(text: String): String {
+  open fun getMd5(text: String): String {
     val md = MessageDigest.getInstance("MD5")
     md.update(text.toByteArray())
     val byteData = md.digest()

@@ -1,12 +1,15 @@
+import io.github.tarek360.dependencies.Dependencies
+import io.github.tarek360.dependencies.Project
 import org.jetbrains.kotlin.config.KotlinCompilerVersion
 
 plugins {
   kotlin("jvm")
   id("java-library")
   id("maven-publish")
+  jacoco
 }
 
-apply { from("../mvn-push.gradle") }
+apply { from("../push.gradle") }
 
 repositories {
   mavenLocal()
@@ -14,12 +17,12 @@ repositories {
   mavenCentral()
 }
 
-group = "io.github.tarek360"
-version = "0.0.1"
+group = Project.group
+version = Project.version
 
 dependencies {
-  implementation(kotlin("stdlib-jdk8"))
-  implementation("junit:junit:4.12")
+  implementation(kotlin(Dependencies.kotlinJDK))
+  implementation(Dependencies.junit)
 }
 
 java {

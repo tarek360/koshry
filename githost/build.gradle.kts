@@ -1,12 +1,17 @@
+import io.github.tarek360.dependencies.Dependencies
+import io.github.tarek360.dependencies.Project
+import io.github.tarek360.dependencies.Versions
+import io.github.tarek360.dependencies.Modules
 import org.jetbrains.kotlin.config.KotlinCompilerVersion
 
 plugins {
   kotlin("jvm")
   id("java-library")
   id("maven-publish")
+  jacoco
 }
 
-apply { from("../mvn-push.gradle") }
+apply { from("../push.gradle") }
 
 repositories {
   mavenLocal()
@@ -14,19 +19,20 @@ repositories {
   mavenCentral()
 }
 
-group = "io.github.tarek360"
-version = "0.0.1"
-
-val okHttpVersion = "3.8.1"
+group = Project.group
+version = Project.version
 
 dependencies {
-  implementation(kotlin("stdlib-jdk8"))
-  implementation(project(":core"))
 
-  implementation("com.squareup.okhttp3:logging-interceptor:$okHttpVersion")
-  implementation("com.squareup.okhttp3:okhttp:$okHttpVersion")
+  implementation(kotlin(Dependencies.kotlinJDK))
+  implementation(project(Modules.core))
 
-  implementation("org.json:json:20160810")
+  Dependencies.okHttp3.forEach {
+    implementation(it)
+  }
+
+  implementation(Dependencies.json)
+  testImplementation(Dependencies.junit)
 }
 
 java {
