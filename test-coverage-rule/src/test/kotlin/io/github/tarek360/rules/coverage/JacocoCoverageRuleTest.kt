@@ -42,37 +42,37 @@ class JacocoCoverageRuleTest {
 
         // Arrange
 
-        val htmlFilePath = "https://tarek360.github.io/koshry/build/reports"
+//        val htmlFilePath = "https://tarek360.github.io/koshry/build/reports"
 
         val rule = JacocoCoverageRule(
                 classCoverageThreshold = 80,
                 csvFilePath = "build/reports/jacoco/jacoco.csv",
-                htmlFilePath = htmlFilePath,
+//                htmlFilePath = htmlFilePath,
                 csvParser = csvParser
         )
 
         val expectedIssue1 = Issue(
                 msg = "com/android/game/App",
                 level = Level.INFO("✅"),
-                filePath = "$htmlFilePath${separator}com.android.game${separator}App.html",
+                filePath = "src/main/java/com/android/game/App.java",
                 description = "95%")
 
         val expectedIssue2 = Issue(
                 msg = "com/android/game/Activity",
                 level = Level.INFO("✅"),
-                filePath = "$htmlFilePath${separator}com.android.game${separator}Activity.html",
+                filePath = "src/main/kotlin/com/android/game/Activity.kt",
                 description = "80%")
 
         val expectedIssue3 = Issue(
                 msg = "com/android/game/Presenter",
                 level = Level.ERROR("💣"),
-                filePath = "$htmlFilePath${separator}com.android.game${separator}Presenter.html",
+                filePath = "src/main/kotlin/com/android/game/Presenter.kt",
                 description = "50%")
 
         val expectedIssue4 = Issue(
                 msg = "com/android/game/Presenter\$InnerClass",
                 level = Level.ERROR("🔥"),
-                filePath = "$htmlFilePath${separator}com.android.game${separator}Presenter\$InnerClass.html",
+                filePath = "src/main/kotlin/com/android/game/Presenter.kt",
                 description = "0%")
 
 
@@ -109,7 +109,7 @@ class JacocoCoverageRuleTest {
         val expectedIssue = Issue(
                 msg = "com/android/game/App",
                 level = Level.INFO("✅"),
-                filePath = "com.android.game${separator}App.html",
+                filePath = "src/main/java/com/android/game/App.java",
                 description = "95%")
 
 

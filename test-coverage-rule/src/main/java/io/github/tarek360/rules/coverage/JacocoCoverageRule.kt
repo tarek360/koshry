@@ -11,7 +11,7 @@ import io.github.tarek360.rules.core.Level.INFO
 class JacocoCoverageRule internal constructor(
         private var classCoverageThreshold: Int,
         private var csvFilePath: String,
-        private var htmlFilePath: String?,
+        private var htmlFilePath: String? = null,
         private val csvParser: CsvParser
 ) : Rule() {
 
@@ -43,24 +43,32 @@ class JacocoCoverageRule internal constructor(
 
     private fun checkFiles(gitFiles: List<GitFile>) {
 
-        val touchedClasses = gitFiles.filterThenMapIfNotNull { file ->
+        val kotlinAndJavaFiles = getKotlinAndJavaFiles(gitFiles)
 
-            val inKotlinFile = file.path.split("${separator}kotlin$separator")
-            val inJavaFile = file.path.split("${separator}java$separator")
-
-            when {
-                inKotlinFile.size > 1 -> removeExtension(inKotlinFile[1])
-                inJavaFile.size > 1 -> removeExtension(inJavaFile[1])
-                else -> {
-                    null
+        classesCoverage.forEach { classCoverage ->
+            kotlinAndJavaFiles.forEach { file ->
+                if (classCoverage.classPath == file.first || classCoverage.classPath.startsWith("${file.first}\$")) {
+                    addIssue(classCoverage, file.second)
                 }
             }
         }
+    }
 
-        classesCoverage.forEach { classCoverage ->
-            touchedClasses.forEach { gitFilePath ->
-                if (classCoverage.filePath == gitFilePath || classCoverage.filePath.startsWith("$gitFilePath\$")) {
-                    addIssue(classCoverage)
+    /**
+     * Filter GitFile and return only files in java or kotlin folder
+     * @return a list of pairs, each pair is a class path and GitFile
+     */
+    private fun getKotlinAndJavaFiles(gitFiles: List<GitFile>): List<Pair<String, GitFile>> {
+        return gitFiles.filterThenMapIfNotNull { file ->
+
+            val fileInKotlinFolder = file.path.split("${separator}kotlin$separator")
+            val fileInJavaFolder = file.path.split("${separator}java$separator")
+
+            when {
+                fileInKotlinFolder.size > 1 -> Pair(removeExtension(fileInKotlinFolder[1]), file)
+                fileInJavaFolder.size > 1 -> Pair(removeExtension(fileInJavaFolder[1]), file)
+                else -> {
+                    null
                 }
             }
         }
@@ -71,17 +79,18 @@ class JacocoCoverageRule internal constructor(
         report.issues.add(Issue(level = level, msg = PROJECT_TOTAL_COVERAGE_TITLE.bold(), description = "$totalCoverage%".bold()))
     }
 
-    private fun addIssue(classCoverage: ClassCoverage) {
-        val msg = classCoverage.filePath
+    private fun addIssue(classCoverage: ClassCoverage, gitFile: GitFile) {
+        val msg = classCoverage.classPath
         val coverage = "${classCoverage.coveredBranches}%"
 
-        val name = classCoverage.fileName.replace('.', '$')
-
-        val filePath = if (htmlFilePath != null) {
-            "$htmlFilePath$separator${classCoverage.classPackage}$separator$name.html"
-        } else {
-            "${classCoverage.classPackage}$separator$name.html"
-        }
+//        val name = classCoverage.classPath.replace('.', '$')
+//
+        val filePath =
+//                 if (htmlFilePath != null) {
+//            "$htmlFilePath$separator${classCoverage.classPackage}$separator$name.html"
+//        } else {
+            gitFile.path
+//        }
 
         val level = getLevel(classCoverage.coveredBranches)
         report.issues.add(Issue(level = level, filePath = filePath, msg = msg, description = coverage))

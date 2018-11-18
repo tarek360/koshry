@@ -46,7 +46,7 @@ fun main(_args: Array<String>) {
             rule = jacocoCoverageRule {
                 classCoverageThreshold = 79 //79%
                 csvFilePath = "build/reports/jacoco/jacoco.csv"
-                htmlFilePath = "https://tarek360.github.io/koshry/build/reports/"
+//                htmlFilePath = "https://tarek360.github.io/koshry/build/reports/"
             }
         }
     }

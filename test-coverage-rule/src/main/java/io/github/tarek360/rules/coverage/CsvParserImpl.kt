@@ -19,8 +19,8 @@ class CsvParserImpl : CsvParser {
                     val line = it.split(',')
 
                     val classPackage = line[1]
-                    val fileName = line[2]
-                    val filePath = convertToFilePath(classPackage, fileName)
+                    val className = line[2]
+                    val classPath = convertToClassPath(classPackage, className)
 
                     val missedBranches = line[5].toInt()
                     val coveredBranches = line[6].toInt()
@@ -33,7 +33,10 @@ class CsvParserImpl : CsvParser {
                         coveredBranches.toFloat() / (missedBranches + coveredBranches) * 100
                     }
 
-                    classes.add(ClassCoverage(classPackage = classPackage, fileName = fileName, filePath = filePath, coveredBranches = coverage.toInt()))
+                    classes.add(ClassCoverage(classPackage = classPackage,
+                            className = className,
+                            classPath = classPath,
+                            coveredBranches = coverage.toInt()))
                 } else {
                     notFirstLine = true
                 }
@@ -49,7 +52,7 @@ class CsvParserImpl : CsvParser {
         return classes
     }
 
-    private fun convertToFilePath(pkg: String, className: String): String {
+    private fun convertToClassPath(pkg: String, className: String): String {
         val name = className.replace('.', '$')
         return "${pkg.replace('.', '/')}/$name"
     }
