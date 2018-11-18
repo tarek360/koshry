@@ -16,10 +16,11 @@ class GithubFileUrlGenerator(
       ""
     }
 
+    val domain = gitHostInfo.domain
     val ownerNameRepoName = gitHostInfo.ownerNameRepoName
     val pullRequestId = gitHostInfo.pullRequestId
     val filePathMd5 = md5Generator.getMd5(filePath)
 
-    return "https://github.com/$ownerNameRepoName/pull/$pullRequestId/files#diff-$filePathMd5$line"
+    return "https://$domain/$ownerNameRepoName/pull/$pullRequestId/files#diff-$filePathMd5$line"
   }
 }
