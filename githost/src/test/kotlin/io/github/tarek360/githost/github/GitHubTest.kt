@@ -13,14 +13,21 @@ class GitHubTest {
     fun postComment() {
         val gitHostInfo = GitHostInfo("github.com", "tarek360/RichPath", 1, "abcd1234")
         val gitHub = GitHub(gitHostInfo)
-        gitHub.post(Comment("Hi", false))
+        gitHub.postComment(Comment("Hi", false))
+    }
+
+    @Test
+    fun updateComment() {
+        val gitHostInfo = GitHostInfo("github.com", "tarek360/RichPath", 1, "abcd1234")
+        val gitHub = GitHub(gitHostInfo)
+        gitHub.updateComment(Comment("Hi", false), 1)
     }
 
     @Test
     fun postStatus() {
         val gitHostInfo = GitHostInfo("github.com", "tarek360/RichPath", 1, "abcd1234")
         val gitHub = GitHub(gitHostInfo)
-        gitHub.post(Status("", Status.Type.SUCCESS, "abcef98765", "Status description", null))
+        gitHub.postStatus(Status("", Status.Type.SUCCESS, "abcef98765", "Status description", null))
     }
 
     @Test

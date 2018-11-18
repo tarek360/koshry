@@ -55,13 +55,13 @@ class GitHostControllerTest {
     fun postComment() {
         // Arrange
         val expectedUrl = "http://koshry.koshry"
-        whenever(gitHost.post(any<Comment>())).thenReturn(expectedUrl)
+        whenever(gitHost.postComment(any())).thenReturn(expectedUrl)
 
         // Act
         val actualUrl = gitHostController.postComment(Comment("", false))
 
         // Assert
-        verify(gitHost).post(any<Comment>())
+        verify(gitHost).postComment(any())
         actualUrl mustEqualAndNotNull expectedUrl
 
     }
@@ -75,7 +75,7 @@ class GitHostControllerTest {
 
         // Assert
         val argumentCaptor = argumentCaptor<Status>()
-        verify(gitHost).post(argumentCaptor.capture())
+        verify(gitHost).postStatus(argumentCaptor.capture())
         argumentCaptor.firstValue.apply {
             context mustEqual "Koshry"
             type mustEqual Status.Type.FAILURE
@@ -94,7 +94,7 @@ class GitHostControllerTest {
 
         // Assert
         val argumentCaptor = argumentCaptor<Status>()
-        verify(gitHost).post(argumentCaptor.capture())
+        verify(gitHost).postStatus(argumentCaptor.capture())
         argumentCaptor.firstValue.apply {
             context mustEqual "Koshry"
             type mustEqual Status.Type.SUCCESS
