@@ -18,7 +18,7 @@ class GitHub(private val gitHostInfo: GitHostInfo, isEnterprise: Boolean = false
         // if it's not mocked web server
         if (baseUrl.isEmpty()) {
             baseUrl = if (isEnterprise) {
-                "https://${gitHostInfo.domain}/api/v3"
+                "https://${gitHostInfo.domain}/api/v3/"
             } else {
                 "https://api.github.com/"
             }
