@@ -35,7 +35,7 @@ class GitHubTest {
         val gitHostInfo = GitHostInfo("github.enterprise-company.com", "tarek360/RichPath", 1, "abcd1234")
         GitHub(gitHostInfo, true)
 
-        baseUrl mustEqual "https://github.enterprise-company.com/api/v3"
+        baseUrl mustEqual "https://github.enterprise-company.com/api/v3/"
     }
 
     @After
