@@ -21,7 +21,7 @@ class RulesManTest {
     private lateinit var reportsAggregator: ReportsAggregator
 
     private val rulesMan by lazy {
-        val pullRequest = PullRequest("","","")
+        val pullRequest = PullRequest("","","", "", "", arrayListOf("bug", "fix"))
         val ci = Ci("",0,"", 0)
         RulesMan(ci, pullRequest, reportsAggregator)
     }

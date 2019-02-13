@@ -12,8 +12,6 @@ fun main(_args: Array<String>) {
 
     val configuration = koshry {
 
-        baseSha = ""
-
         rules {
             rule = protectedFileRule {
                 reportTitle = "Files are protected and can't be modified, ask @tarek360 to modify"
@@ -46,7 +44,6 @@ fun main(_args: Array<String>) {
             rule = jacocoCoverageRule {
                 classCoverageThreshold = 79 //79%
                 csvFilePath = "build/reports/jacoco/jacoco.csv"
-//                htmlFilePath = "https://tarek360.github.io/koshry/build/reports/"
             }
         }
     }

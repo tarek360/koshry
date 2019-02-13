@@ -12,12 +12,19 @@ class PullRequestParser {
         const val KEY_SHA = "sha"
         const val KEY_USER = "user"
         const val KEY_LOGIN = "login"
+        const val KEY_TITLE = "title"
+        const val KEY_BODY = "body"
+        const val KEY_LABELS = "labels"
+        const val KEY_LABEL_NAME = "name"
     }
 
     fun parse(json: String?): PullRequest? {
         var headSha: String? = null
         var baseSha: String? = null
+        var title: String? = null
+        var body: String? = null
         var author: String? = null
+        val labels = arrayListOf<String>()
 
         json?.run {
             try {
@@ -37,6 +44,14 @@ class PullRequestParser {
                     }
                 }
 
+                if (jsonObject.has(KEY_TITLE)) {
+                    title = jsonObject.getString(KEY_TITLE)
+                }
+
+                if (jsonObject.has(KEY_BODY)) {
+                    body = jsonObject.getString(KEY_BODY)
+                }
+
                 if (jsonObject.has(KEY_USER)) {
                     val baseJsonObject = jsonObject.getJSONObject(KEY_USER)
                     if (baseJsonObject.has(KEY_LOGIN)) {
@@ -44,11 +59,33 @@ class PullRequestParser {
                     }
                 }
 
+                if (jsonObject.has(KEY_LABELS)) {
+                    val labelsJsonArray = jsonObject.getJSONArray(KEY_LABELS)
+                    labelsJsonArray.forEach {
+                        if(it is JSONObject){
+                            if (it.has(KEY_LABEL_NAME)) {
+                                val name = it.getString(KEY_LABEL_NAME)
+                                labels.add(name)
+                            }
+                        }
+
+                    }
+                }
+
+
             } catch (ex: JSONException) {
                 return null
             }
         }
-        return PullRequest(headSha = headSha, baseSha = baseSha, author = author)
+
+        return PullRequest(
+                headSha = headSha,
+                baseSha = baseSha,
+                title = title,
+                body = body,
+                author = author,
+                labels = labels
+        )
     }
 
 }

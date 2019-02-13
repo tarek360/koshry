@@ -87,7 +87,8 @@ class ProtectedFilesRuleTest {
 
         testRule(rule)
                 .withModifiedFile(file = "CriticalFile")
-                .withPullRequest(PullRequest(null, null, "ahmed"))
+                .withPullRequest(PullRequest(null, null, null,
+                        null, "ahmed", arrayListOf()))
 
                 // Act
                 .apply()
@@ -119,7 +120,8 @@ class ProtectedFilesRuleTest {
 
         testRule(rule)
                 .withModifiedFile(file = "CriticalFile")
-                .withPullRequest(PullRequest(null, null, null))
+                .withPullRequest(PullRequest(null, null, null, null,
+                        null, arrayListOf()))
 
                 // Act
                 .apply()
