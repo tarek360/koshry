@@ -7,7 +7,7 @@
 - gives your team the ability to monitor **pull requests** and take automatic **actions** depend on your rules result.
 - create a report of the result of applying your rules on the pull request and post it back as a comment on the pull request.
 - is written in **Kotlin** and runs on JVM.
-- has some of the ready rules for common use cases.
+- has some of the [ready rules](https://github.com/tarek360/koshry/wiki) for common use cases.
 - is **customizable**, you can [write your own **Custom Rule**](https://medium.com/@Tarek360/your-first-koshry-rule-c6648ac34ca2), everything is a **Rule** in Koshry.
 - works on any project whatever the programming language you use in your project
 
@@ -48,6 +48,9 @@ These rules are applied to the **git diff** of the  **pull request**.
 - **LineRule**: Apply a **condition** to all of the **added** and **modified lines** in the pull request.
 - **FileRule**: Apply a **condition** to all of the **added** and **modified files** in the pull request.
 - **ProtectedFilesRule**: Protect a list of files to be changed by someone hasn't permission to make a change.
+
+**Check the [Wiki](https://github.com/tarek360/koshry/wiki) to know How to write Koshry Rules**
+
 
 ## Koshry works automatically with:
 - CI
