@@ -8,7 +8,7 @@
 - create a report of the result of applying your rules on the pull request and post it back as a comment on the pull request.
 - is written in **Kotlin** and runs on JVM.
 - has some of the ready rules for common use cases.
-- is **customizable**, you can write your own **Custom Rule**, everything is a **Rule** in Koshry.
+- is **customizable**, you can [write your own **Custom Rule**](https://medium.com/@Tarek360/your-first-koshry-rule-c6648ac34ca2), everything is a **Rule** in Koshry.
 - works on any project whatever the programming language you use in your project
 
 
@@ -43,7 +43,7 @@ Use `KOSHRY_GIT_HOST_TOKEN` as a key of the environment variable.
 ## Koshry Rules:
 Each Koshry **Rule** does some work then returns a **Report** (or not) as a result of that work.
 
-While you can create your own rule, Koshry has some of the ready rules, you can make use of them directly.
+While you can [create your own custom rule](https://medium.com/@Tarek360/your-first-koshry-rule-c6648ac34ca2), Koshry has some of the ready rules, you can make use of them directly.
 These rules are applied to the **git diff** of the  **pull request**.
 - **LineRule**: Apply a **condition** to all of the **added** and **modified lines** in the pull request.
 - **FileRule**: Apply a **condition** to all of the **added** and **modified files** in the pull request.
