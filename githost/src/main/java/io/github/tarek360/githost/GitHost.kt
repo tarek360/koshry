@@ -1,19 +1,25 @@
 package io.github.tarek360.githost
 
-interface GitHost {
+import io.github.tarek360.core.logger
+
+abstract class GitHost {
+
+  init {
+    logger.d { "GitHost name: ${this.javaClass.typeName}" }
+  }
 
   /**
    *@return Comment URL
    */
-  fun postComment(comment: Comment): String?
+  abstract fun postComment(comment: Comment): String?
 
-  fun updateComment(comment: Comment, commentId: Int): String?
+  abstract fun updateComment(comment: Comment, commentId: Int): String?
 
-  fun postStatus(status: Status)
+  abstract fun postStatus(status: Status)
 
-  fun pushFile(filePath: String, branchName: String, commitMsg: String)
+  abstract fun pushFile(filePath: String, branchName: String, commitMsg: String)
 
-  fun getPullRequestInfo(): PullRequest?
+  abstract fun getPullRequestInfo(): PullRequest?
 
-  fun getPullRequestComments(): List<GitHostComment>?
+  abstract fun getPullRequestComments(): List<GitHostComment>?
 }

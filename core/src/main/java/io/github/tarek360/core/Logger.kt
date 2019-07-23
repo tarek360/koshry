@@ -1,6 +1,6 @@
 package io.github.tarek360.core
 
-const val DEBUGGABLE = false
+var debuggableLogger = false
 
 val logger: Logger = Logger()
 
@@ -15,7 +15,7 @@ class Logger {
     }
 
     fun d(msg: () -> String?) {
-        if (DEBUGGABLE) {
+        if (debuggableLogger) {
             println("$ANSI_WHITE${msg()}$ANSI_RESET")
         }
     }
