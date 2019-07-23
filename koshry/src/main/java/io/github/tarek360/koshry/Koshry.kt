@@ -13,7 +13,7 @@ class Koshry {
             val runner = KoshryRunner()
             if (ci != null) {
                 logger.i { "${ci.javaClass.simpleName} is detected!" }
-                logger.i { "Koshry started running on ${ci.javaClass.simpleName}.." }
+                logger.i { "Koshry has started to run on ${ci.javaClass.simpleName}.." }
 
                 val gitHostInfo = GitHostInfoProvider(ci, CommanderImpl(), GitRemoteUrlParser()).provide()
 
@@ -23,7 +23,7 @@ class Koshry {
 
                 runner.runOnCi(ci, koshryConfig, gitHostInfo, gitHostController)
             } else {
-                logger.i { "Koshry started running locally.." }
+                logger.i { "Koshry has started to run locally.." }
                 runner.runLocally(koshryConfig)
             }
         }

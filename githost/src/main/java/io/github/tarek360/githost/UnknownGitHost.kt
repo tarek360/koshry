@@ -2,7 +2,11 @@ package io.github.tarek360.githost
 
 import io.github.tarek360.core.logger
 
-class UnknownGitHost : GitHost {
+class UnknownGitHost : GitHost() {
+
+    init {
+        logger.e { "Unknown GitHostType" }
+    }
 
     override fun postComment(comment: Comment): String? {
         logger.w { "Unknown GitHost: Koshry can't post the report" }

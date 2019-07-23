@@ -12,7 +12,7 @@ import java.net.HttpURLConnection.HTTP_CREATED
 
 var baseUrl = ""
 
-class GitHub(private val gitHostInfo: GitHostInfo, isEnterprise: Boolean = false) : GitHost {
+class GitHub(private val gitHostInfo: GitHostInfo, isEnterprise: Boolean = false) : GitHost() {
 
     init {
         // if it's not mocked web server

@@ -11,6 +11,7 @@ import io.github.tarek360.rules.core.Level.ERROR
 fun main(_args: Array<String>) {
 
     val configuration = koshry {
+        debuggable = true
 
         rules {
             rule = protectedFileRule {
