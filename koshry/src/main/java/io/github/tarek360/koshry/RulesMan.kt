@@ -18,6 +18,10 @@ class RulesMan(
                    rules: List<Rule>)
             : Comment {
 
+        if (baseSha.isBlank() || headSha.isBlank()) {
+            return Comment("No SHA, No diff, No Report", true)
+        }
+
         var shouldFail = false
         val gitDiff = GitDiffProvider.provide(baseSha, headSha)
 

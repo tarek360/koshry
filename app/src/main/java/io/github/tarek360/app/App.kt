@@ -11,8 +11,7 @@ import io.github.tarek360.rules.core.Level.ERROR
 fun main(_args: Array<String>) {
 
     val configuration = koshry {
-
-        baseSha = ""
+        debuggable = true
 
         rules {
             rule = protectedFileRule {
@@ -46,7 +45,6 @@ fun main(_args: Array<String>) {
             rule = jacocoCoverageRule {
                 classCoverageThreshold = 79 //79%
                 csvFilePath = "build/reports/jacoco/jacoco.csv"
-//                htmlFilePath = "https://tarek360.github.io/koshry/build/reports/"
             }
         }
     }

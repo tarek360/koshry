@@ -29,8 +29,10 @@ open class GitHostInfoProvider(private val ci: Ci,
             logger.e { "Cant't find owner name and/or repo name in environment variables." }
         }
         if (token == null) {
-            logger.e { "Cant't 'KOSHRY_GIT_HOST_TOKEN' in environment variables." }
+            logger.e { "Cant't find 'KOSHRY_GIT_HOST_TOKEN' in environment variables." }
         }
+
+        logger.d { "pullRequestId $pullRequestId, ownerNameRepoName $ownerNameRepoName, token $token" }
 
         return GitHostInfo(
                 domain = gitRemoteOrigin?.domain,

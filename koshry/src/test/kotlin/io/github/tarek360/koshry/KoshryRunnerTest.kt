@@ -44,7 +44,8 @@ class KoshryRunnerTest {
     @Test
     fun runOnCi() {
         // Arrange
-        val pullRequest = PullRequest("headSha", "cde", "tarek360")
+        val pullRequest = PullRequest("headSha", "cde",
+                "title", "body", "tarek360", arrayListOf("bug", "fix"))
         whenever(gitHostController.getPullRequest()).thenReturn(pullRequest)
         whenever(gitHostController.postComment(any())).thenReturn("http://comment.url")
 

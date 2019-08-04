@@ -8,7 +8,11 @@ class PullRequestModelMapper {
         return if (pullRequest != null)
             PullRequest(pullRequest.headSha,
                     pullRequest.baseSha,
-                    pullRequest.author)
+                    pullRequest.title,
+                    pullRequest.body,
+                    pullRequest.author,
+                    pullRequest.labels
+                    )
         else
             null
     }

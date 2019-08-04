@@ -1,5 +1,6 @@
 package io.github.tarek360.koshry
 
+import io.github.tarek360.core.debuggableLogger
 import io.github.tarek360.rules.core.Rule
 import io.github.tarek360.rules.core.RuleDsl
 
@@ -17,6 +18,12 @@ class KoshryBuilder {
 
     var baseSha = ""
     var headSha = ""
+
+    var debuggable = false
+        set(value) {
+            field = value
+            debuggableLogger = value
+        }
 
     private val rules = ArrayList<Rule>()
 

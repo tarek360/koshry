@@ -15,4 +15,4 @@ infix fun Any?.mustEqualAndNotNull(expected: Any) {
 }
 
 infix fun Collection<Any>.mustHaveSize(expected: Int) = assertEquals("unexpected size", expected, this.size)
-
+fun Collection<Any>.mustEmpty() = this.mustHaveSize(0)
