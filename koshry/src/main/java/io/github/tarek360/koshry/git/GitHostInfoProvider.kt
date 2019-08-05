@@ -43,8 +43,8 @@ open class GitHostInfoProvider constructor(private val ci: Ci,
                     token = token)
 
         } catch (e: Exception) {
-            logger.e { "Something went wrong!" }
-            logger.e { e.message }
+            logger.e { "Something went wrong! Can't provide GitHostInfo!" }
+            e.printStackTrace()
             throw e
         }
     }
