@@ -10,5 +10,5 @@ abstract class Ci {
 
     abstract val projectOwnerNameRepoName: String?
 
-    abstract val pullRequestId: Int?
+    abstract val pullRequestId: String?
 }

@@ -26,11 +26,11 @@ class GitHostInfoProviderTest {
     @Test
     fun provide() {
         // Arrange
-        val gitHostInfoProvider = GitHostInfoProvider(ci, commander, gitRemoteUrlParser)
+        val gitHostInfoProvider = GitHostInfoProvider(ci, commander, gitRemoteUrlParser, null)
         val gitRemoteOrigin = GitRemoteOrigin("github.com", "tarek360/koshry")
         whenever(commander.executeCL(any())).thenReturn(listOf("git@github.com:tarek360/koshry.git"))
         whenever(gitRemoteUrlParser.parse(any())).thenReturn(gitRemoteOrigin)
-        whenever(ci.pullRequestId).thenReturn(11)
+        whenever(ci.pullRequestId).thenReturn("11")
         whenever(ci.gitHostToken).thenReturn("abc123")
 
         // Act
@@ -38,7 +38,7 @@ class GitHostInfoProviderTest {
 
         // Assert
         gitHostInfo.domain mustEqualAndNotNull "github.com"
-        gitHostInfo.pullRequestId mustEqualAndNotNull 11
+        gitHostInfo.pullRequestId mustEqualAndNotNull "11"
         gitHostInfo.ownerNameRepoName mustEqualAndNotNull "tarek360/koshry"
         gitHostInfo.token mustEqualAndNotNull "abc123"
     }
@@ -46,11 +46,11 @@ class GitHostInfoProviderTest {
     @Test
     fun provideWithNullGitRemoteOrigin() {
         // Arrange
-        val gitHostInfoProvider = GitHostInfoProvider(ci, commander, gitRemoteUrlParser)
+        val gitHostInfoProvider = GitHostInfoProvider(ci, commander, gitRemoteUrlParser, null)
 
         whenever(commander.executeCL(any())).thenReturn(listOf("git@github.com:tarek360/koshry.git"))
         whenever(gitRemoteUrlParser.parse(any())).thenReturn(null)
-        whenever(ci.pullRequestId).thenReturn(11)
+        whenever(ci.pullRequestId).thenReturn("11")
         whenever(ci.projectOwnerNameRepoName).thenReturn("different than tarek360/koshry")
         whenever(ci.gitHostToken).thenReturn("abc123")
 
@@ -58,7 +58,7 @@ class GitHostInfoProviderTest {
         val gitHostInfo = gitHostInfoProvider.provide()
 
         // Assert
-        gitHostInfo.pullRequestId mustEqualAndNotNull 11
+        gitHostInfo.pullRequestId mustEqualAndNotNull "11"
         gitHostInfo.ownerNameRepoName mustEqualAndNotNull "different than tarek360/koshry"
         gitHostInfo.token mustEqualAndNotNull "abc123"
     }
@@ -66,7 +66,7 @@ class GitHostInfoProviderTest {
     @Test
     fun provideWithNullValues() {
         // Arrange
-        val gitHostInfoProvider = GitHostInfoProvider(ci, commander, gitRemoteUrlParser)
+        val gitHostInfoProvider = GitHostInfoProvider(ci, commander, gitRemoteUrlParser, null)
 
         whenever(commander.executeCL(any())).thenReturn(listOf("git@github.com:tarek360/koshry.git"))
         whenever(gitRemoteUrlParser.parse(any())).thenReturn(null)
