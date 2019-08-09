@@ -11,10 +11,10 @@ class TeamCityCi : Ci() {
         Environment.getVariable("GITHUB_REPO_SLUG")
     }
 
-    override val pullRequestId: Int?  by lazy {
+    override val pullRequestId: String?  by lazy {
         val teamcityBuildBranch =
                 Environment.getVariable("TEAMCITY_BUILD_BRANCH")?.split("/")
         val id = teamcityBuildBranch?.get(0)
-        id?.toInt()
+        id
     }
 }

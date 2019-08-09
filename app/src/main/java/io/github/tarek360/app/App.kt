@@ -49,6 +49,5 @@ fun main(_args: Array<String>) {
         }
     }
 
-//    Koshry.run(configuration)
-    Koshry.run(configuration, listOf("27", "28"))
+    Koshry.run(configuration)
 }

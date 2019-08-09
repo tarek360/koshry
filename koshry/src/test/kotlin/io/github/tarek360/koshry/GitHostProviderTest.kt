@@ -15,7 +15,7 @@ class GitHostProviderTest {
     @Test
     fun provideGitHub() {
         // Arrange
-        val gitHostProvider = GitHostProvider(GitHostInfo("github.com", "", 0, ""))
+        val gitHostProvider = GitHostProvider(GitHostInfo("github.com", "", "0", ""))
 
         // Act
         val gitHost = gitHostProvider.provide()
@@ -28,7 +28,7 @@ class GitHostProviderTest {
     @Test
     fun provideGitHubEnterprise() {
         // Arrange
-        val gitHostProvider = GitHostProvider(GitHostInfo("github.company.com", "", 0, ""))
+        val gitHostProvider = GitHostProvider(GitHostInfo("github.company.com", "", "0", ""))
 
         // Act
         val gitHost = gitHostProvider.provide()
@@ -40,7 +40,7 @@ class GitHostProviderTest {
     @Test
     fun provideBitbucket() {
         // Arrange
-        val gitHostProvider = GitHostProvider(GitHostInfo("bitbucket.org", "", 0, ""))
+        val gitHostProvider = GitHostProvider(GitHostInfo("bitbucket.org", "", "0", ""))
 
 
         // Act
@@ -53,7 +53,7 @@ class GitHostProviderTest {
     @Test
     fun provideGitlab() {
         // Arrange
-        val gitHostProvider = GitHostProvider(GitHostInfo("gitlab.com", "", 0, ""))
+        val gitHostProvider = GitHostProvider(GitHostInfo("gitlab.com", "", "0", ""))
 
 
         // Act
@@ -66,7 +66,7 @@ class GitHostProviderTest {
     @Test
     fun provideUnknownGitHost() {
         // Arrange
-        val gitHostProvider = GitHostProvider(GitHostInfo("unknowgithost.com", "", 0, ""))
+        val gitHostProvider = GitHostProvider(GitHostInfo("unknowgithost.com", "", "0", ""))
 
 
         // Act
@@ -79,7 +79,7 @@ class GitHostProviderTest {
     @Test
     fun provideUnknownGitHost_emptyDomain() {
         // Arrange
-        val gitHostProvider = GitHostProvider(GitHostInfo("", "", 0, ""))
+        val gitHostProvider = GitHostProvider(GitHostInfo("", "", "0", ""))
 
 
         // Act

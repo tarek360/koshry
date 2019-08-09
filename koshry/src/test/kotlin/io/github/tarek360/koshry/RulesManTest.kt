@@ -22,7 +22,7 @@ class RulesManTest {
 
     private val rulesMan by lazy {
         val pullRequest = PullRequest("","","", "", "", arrayListOf("bug", "fix"))
-        val ci = Ci("",0,"", 0)
+        val ci = Ci("",0,"", "0")
         RulesMan(ci, pullRequest, reportsAggregator)
     }
 

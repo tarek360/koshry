@@ -25,7 +25,7 @@ class KoshryRunnerTest {
 
 
     private val gitHostInfo: GitHostInfo by lazy {
-        GitHostInfo("github.com", "tarek360/RichPath", 1, "abcd1234")
+        GitHostInfo("github.com", "tarek360/RichPath", "1", "abcd1234")
     }
 
     private val koshryConfig by lazy {
