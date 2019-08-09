@@ -21,7 +21,7 @@ class GithubFileUrlGeneratorTest {
 
     @Before
     fun setup() {
-        val gitHostInfo = GitHostInfo("github.com", "tarek360/koshry", 77, "")
+        val gitHostInfo = GitHostInfo("github.com", "tarek360/koshry", "77", "")
         githubFileUrlGenerator = GithubFileUrlGenerator(gitHostInfo, md5Generator)
     }
 

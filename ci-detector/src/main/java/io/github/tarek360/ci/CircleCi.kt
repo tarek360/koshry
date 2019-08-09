@@ -18,10 +18,10 @@ class CircleCi : Ci() {
         }
     }
 
-    override val pullRequestId: Int? by lazy {
+    override val pullRequestId: String? by lazy {
         val pullRequestUrl: String? = Environment.getVariable("CIRCLE_PULL_REQUEST")
         val pullRequestId = pullRequestUrl?.substringAfterLast('/')
-        pullRequestId?.toInt()
+        pullRequestId
     }
 
 

@@ -7,7 +7,8 @@ import io.github.tarek360.githost.GitHostInfo
 
 open class GitHostInfoProvider constructor(private val ci: Ci,
                                            private val commander: Commander,
-                                           private val gitRemoteUrlParser: GitRemoteUrlParser) {
+                                           private val gitRemoteUrlParser: GitRemoteUrlParser,
+                                           private val configuredPullRequestId: String?) {
 
     companion object {
         const val GIT_REMOTE_ORIGIN_URL_COMMAND = "git config --get remote.origin.url"
@@ -20,7 +21,7 @@ open class GitHostInfoProvider constructor(private val ci: Ci,
             val remoteOriginUrl = commander.executeCL(GIT_REMOTE_ORIGIN_URL_COMMAND)[0]
             val gitRemoteOrigin = gitRemoteUrlParser.parse(remoteOriginUrl)
 
-            val pullRequestId = ci.pullRequestId
+            val pullRequestId = configuredPullRequestId ?: ci.pullRequestId
             val ownerNameRepoName = gitRemoteOrigin?.ownerNameRepoName ?: ci.projectOwnerNameRepoName
             val token = ci.gitHostToken
 

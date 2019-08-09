@@ -11,9 +11,9 @@ class TravisCi : Ci() {
     Environment.getVariable("TRAVIS_PULL_REQUEST_SLUG")
   }
 
-  override val pullRequestId: Int?  by lazy {
+  override val pullRequestId: String?  by lazy {
     val buildId: String? = Environment.getVariable("TRAVIS_PULL_REQUEST")
-    buildId?.toInt()
+    buildId
   }
 
 }

@@ -17,7 +17,7 @@ class CiModelMapperTest {
         whenever(ci.gitHostToken).thenReturn("gitHostToken")
         whenever(ci.buildId).thenReturn(17)
         whenever(ci.projectOwnerNameRepoName).thenReturn("projectOwnerNameRepoName")
-        whenever(ci.pullRequestId).thenReturn(3)
+        whenever(ci.pullRequestId).thenReturn("3")
 
         // Act
         val result = ciModelMapper.map(ci)
@@ -28,7 +28,7 @@ class CiModelMapperTest {
             gitHostToken mustEqualAndNotNull "gitHostToken"
             buildId mustEqualAndNotNull 17
             projectOwnerNameRepoName mustEqualAndNotNull "projectOwnerNameRepoName"
-            pullRequestId mustEqualAndNotNull 3
+            pullRequestId mustEqualAndNotNull "3"
         }
     }
 
